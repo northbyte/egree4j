@@ -1,0 +1,57 @@
+{
+  "Id": "5a0e0866-252e-4b79-8a9b-466ea5cca5ce",
+  "Name": "Emplyoment agreement 4132",
+  "Parties": [
+    {
+      "Id": "major-party",
+      "Name": "Michael J. Fox",
+      "GroupName": null,
+      "EmailAddress": "michael.j.fox@example.com",
+      "SocialSecurityNumber": null,
+      "SignedOn": null,
+      "SignatureData": null,
+      "SignatureUrl": null,
+      "MobilePhone": null,
+      "Culture": null,
+      "AnyoneCanSign": false
+    }
+  ],
+  "Documents": [
+    {
+      "Id": null,
+      "Filename": "agreement.pdf",
+      "Data": null,
+      "ContentType": "application/pdf",
+      "Size": 43242,
+      "Hash": null,
+      "Type": "Original",
+      "FormFields": {}
+    }
+  ],
+  "AllowedSignatureTypes": [
+    "ElectronicId"
+  ],
+  "AgentUsername": "Hulk Hogan",
+  "Description": null,
+  "Stakeholders": [],
+  "Metadata": {},
+  "ContinueUrl": null,
+  "ContinueName": null,
+  "ContinueAuto": false,
+  "SendSignRequestEmailToParties": true,
+  "SendFinishEmailToCreator": true,
+  "SendFinishEmailToParties": true,
+  "SendRecallEmailToParties": true,
+  "Culture": "en-US",
+  "SignInSequence": false,
+  "IsEditable": false,
+  "MergeOnSend": false,
+  "ExpireAfterDays": 0,
+  "ExpireOn": null,
+  "RemindAfterDays": 0,
+  "TemplateId": null,
+  "EventCallback": {
+    "Events": null,
+    "Url": null
+  }
+}
