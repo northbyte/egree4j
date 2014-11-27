@@ -27,6 +27,7 @@ import egree4j.models.searching.Query;
 import egree4j.models.utils.SingleSignOn;
 import egree4j.parsing.EntityParser;
 import egree4j.parsing.EntityParserContext;
+import egree4j.parsing.ErrorParser;
 
 /**
  * Implementation of the Egree interface.
@@ -37,11 +38,12 @@ import egree4j.parsing.EntityParserContext;
 public class EgreeImpl implements Egree {
     private static final String CONTENT_TYPE = "application/json; charset=utf-8";
     
-    private Configuration config;
-    private AuthFactory authentication;
-    private EntityParser parser;
-    private HttpClientFactory httpFactory;
-    private RequestHandler handler;
+    private Configuration       config;
+    private AuthFactory         authentication;
+    private EntityParser        parser;
+    private ErrorParser         errorParser;
+    private HttpClientFactory   httpFactory;
+    private RequestHandler      handler;
     
     public EgreeImpl(Configuration config, AuthFactory auth) 
             throws EgreeException {
@@ -163,10 +165,13 @@ public class EgreeImpl implements Egree {
      */
     private void init() throws EgreeException {
         this.parser = EntityParserContext.getFactory(config).getInstance();
+        this.errorParser = parser.getErrorParser();
         this.httpFactory = new DefaultHttpClientFactory();
         this.handler = new RequestHandler(
                 httpFactory.getInstance(authentication), 
-                authentication, config);
+                errorParser,
+                authentication,
+                config);
     }
 
 }

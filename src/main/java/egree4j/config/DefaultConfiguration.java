@@ -93,4 +93,16 @@ public class DefaultConfiguration implements Configuration {
     public String getEntityParserFactory() {
         return entityParserFactory;
     }
+
+    @Override
+    public String toString() {
+        return "DefaultConfiguration [hostname=" + hostname + ", restBaseUrl="
+                + restBaseUrl + ", scheme=" + scheme + ", port=" + port
+                + ", testEnabled=" + testEnabled + ", authenticationKey=***"
+                + ", authenticationPassword=***"
+                + ", entityParserFactory="
+                + entityParserFactory + "]";
+    }
+    
+    
 }

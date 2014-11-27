@@ -14,7 +14,7 @@ import java.util.Properties;
  *
  */
 public class PropertyConfiguration extends DefaultConfiguration {
-    private static final String HOSTNAME = "hostname";
+    private static final String HOSTNAME = "http.host";
     private static final String REST_BASE_URL = "restBaseUrl";
     private static final String TEST_ENABLED = "test.enabled";
     
@@ -49,7 +49,9 @@ public class PropertyConfiguration extends DefaultConfiguration {
     
     private void loadPropertyStream(Properties properties, InputStream input) {
         try {
-            properties.load(input);
+            if (input != null) {
+                properties.load(input);
+            }
         } catch (IOException e) {
             // Ignore, the file probably doesn't exist
         } catch (SecurityException se) {
@@ -61,7 +63,7 @@ public class PropertyConfiguration extends DefaultConfiguration {
         File file = new File(filename);
         if (file.exists() && file.isFile()) {
             try (FileInputStream input = new FileInputStream(file)) {
-                loadPropertyStream(properties, input);
+                loadPropertyStream(properties, input);   
             } catch (IOException e) {
                 // Ignore, file not found so then we just don't load from this
             } 
@@ -106,4 +108,18 @@ public class PropertyConfiguration extends DefaultConfiguration {
     private int toInt(String value) {
         return Integer.valueOf(value);
     }
+
+    @Override
+    public String toString() {
+        return "PropertyConfiguration [getHostname()=" + getHostname()
+                + ", getRestBaseUrl()=" + getRestBaseUrl() + ", getPort()="
+                + getPort() + ", getScheme()=" + getScheme()
+                + ", isTestEnabled()=" + isTestEnabled()
+                + ", getAuthenticationKey()=" + getAuthenticationKey()
+                + ", getAuthenticationPassword()="
+                + getAuthenticationPassword() + ", getEntityParserFactory()="
+                + getEntityParserFactory() + "]";
+    }
+    
+    
 }

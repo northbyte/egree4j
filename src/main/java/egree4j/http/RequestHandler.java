@@ -9,12 +9,18 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import egree4j.EgreeException;
+import egree4j.EgreeServiceException;
 import egree4j.config.Configuration;
+import egree4j.models.utils.ServiceError;
+import egree4j.parsing.ErrorParser;
 
 /**
  * Request handler that simplifies the GET and POST requests. It will utilize
@@ -24,8 +30,13 @@ import egree4j.config.Configuration;
  *
  */
 public class RequestHandler {
+    private static final Logger logger = LoggerFactory.getLogger(
+            RequestHandler.class);
+    private static final Integer HTTP_OK = 200;
+    
     private CloseableHttpClient client;
     private AuthFactory auth;
+    private ErrorParser errorParser;
     
     private String  scheme;     // https
     private String  host;       // app.egree.com
@@ -33,10 +44,11 @@ public class RequestHandler {
     private Integer port;       // 443
     
     
-    public RequestHandler(CloseableHttpClient client, AuthFactory authFactory, 
-            Configuration conf) {
+    public RequestHandler(CloseableHttpClient client, ErrorParser errorParser,
+            AuthFactory authFactory, Configuration conf) {
         this.client = client;
         this.auth = authFactory;
+        this.errorParser = errorParser;
         
         this.host = conf.getHostname();
         this.baseUrl = conf.getRestBaseUrl();
@@ -52,10 +64,12 @@ public class RequestHandler {
      * @param path Path to resource, for example /getcase.
      * @param parameters Optional parameters.
      * @return An http entity that has been received from the get.
+     * @throws EgreeServiceException If the Egree service sent a readable 
+     * invalid response, indicating something is incorrect.
      * @throws EgreeException If a connection or http error is occurred.
      */
     public HttpEntity get(String path, NameValuePair... parameters) 
-            throws EgreeException {
+            throws EgreeServiceException, EgreeException {
         try {
             URIBuilder builder = new URIBuilder();
             builder.setScheme(scheme)
@@ -67,10 +81,11 @@ public class RequestHandler {
             }
             
             HttpGet httpGet = new HttpGet(builder.build());
+            debug(httpGet);
             CloseableHttpResponse response = client.execute(
                     new HttpHost(host, port, scheme), httpGet, getContext());
             
-            return getEntity(response);
+            return checkResponse(response);
         } catch (IOException | URISyntaxException e) {
             throw new EgreeException(
                     "Unable to send request to Egree service", e);
@@ -85,16 +100,20 @@ public class RequestHandler {
      * @param path Path to resource, for example /addcase.
      * @param body The body of the HTTP post to send.
      * @return An http entity that has been received from the post.
+     * @throws EgreeServiceException If the Egree service sent a readable 
+     * invalid response, indicating something is incorrect.
      * @throws EgreeException If a connection or http error is occured.
      */
-    public HttpEntity post(String path, HttpEntity body) throws EgreeException {
+    public HttpEntity post(String path, HttpEntity body) 
+            throws EgreeServiceException, EgreeException {
         try {
             HttpPost httpPost = new HttpPost(processPath(path));
             httpPost.setEntity(body);
+            debug(httpPost);
             CloseableHttpResponse response = client.execute(
                     new HttpHost(host, port, scheme), httpPost, getContext());
             
-            return getEntity(response);
+            return checkResponse(response);
         } catch (IOException e) {
             throw new EgreeException(
                     "Unable to post request to Egree service", e);
@@ -110,10 +129,12 @@ public class RequestHandler {
      * @param parameters Post parameters that should be attached directly to the
      * HTTP Post content body.
      * @return An http entity that has been received from the post.
+     * @throws EgreeServiceException If the Egree service sent a readable 
+     * invalid response, indicating something is incorrect.
      * @throws EgreeException If a connection or http error is occured.
      */
     public HttpEntity post(String path, NameValuePair... parameters) 
-            throws EgreeException {
+            throws EgreeServiceException, EgreeException {
         try {
             URIBuilder builder = new URIBuilder();
             builder.setScheme(scheme)
@@ -124,28 +145,14 @@ public class RequestHandler {
                 builder.setParameters(parameters);
             }
             HttpPost httpPost = new HttpPost(builder.build());
+            debug(httpPost);
             CloseableHttpResponse response = client.execute(
                     new HttpHost(host, port, scheme), httpPost, getContext());
             
-            return getEntity(response);
+            return checkResponse(response);
         } catch (IOException | URISyntaxException e) {
             throw new EgreeException(
                     "Unable to send request to Egree service", e);
-        }
-    }
-    
-    /*
-     * DRY method.
-     * Closes the response and returns the HTTP Entity from it.
-     * 
-     * Will throw an exception if the closing failed.
-     */
-    private HttpEntity getEntity(CloseableHttpResponse response) 
-            throws IOException {
-        try {
-            return response.getEntity();
-        } finally {
-            response.close();
         }
     }
     
@@ -170,5 +177,40 @@ public class RequestHandler {
             return baseUrl + "/" + path;
         }
         return baseUrl + path;
-    }    
+    }
+    
+    /*
+     * Reads the response from the Egree service. This will validate that the
+     * response code is valid before it tries to read the entity data. If this
+     * failed, an exception will be thrown indicating what error was seen
+     * on the Egree service side.
+     */
+    private HttpEntity checkResponse(CloseableHttpResponse response)
+            throws EgreeServiceException, IOException {
+        try {
+            int code = response.getStatusLine().getStatusCode();
+            if (code != HTTP_OK) {
+                ServiceError error = errorParser.parseError(response);
+                throw new EgreeServiceException(error.getErrorCode(), 
+                        error.getMessage(), error.getCode());
+            }
+            return response.getEntity();
+        } finally {
+            response.close();
+        }        
+    }
+    
+    /*
+     * Debugs a request if debug is activated.
+     */
+    private void debug(HttpRequestBase request) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Sending " + request.getMethod() + " request to" 
+                    + " Scheme: " + request.getURI().getScheme()
+                    + " Host: " + request.getURI().getHost()
+                    + " Port: " + request.getURI().getPort()
+                    + " Path: " + request.getURI().getPath()
+                    + " as request " + request.getRequestLine().getUri());
+        }
+    }
 }

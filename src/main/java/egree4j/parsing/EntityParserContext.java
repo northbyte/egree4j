@@ -27,8 +27,10 @@ public final class EntityParserContext {
             try {
                 String factory = null;
                 if (conf.getEntityParserFactory() == null 
-                        && conf.getEntityParserFactory().isEmpty()) {
+                        || conf.getEntityParserFactory().isEmpty()) {
                     factory = DEFAULT_PARSER_FACTORY;
+                } else {
+                    factory = conf.getEntityParserFactory();
                 }
                 
                 FACTORY = (EntityParserFactory) 

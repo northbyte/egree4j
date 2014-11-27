@@ -22,6 +22,7 @@ import egree4j.EgreeException;
  */
 public class JacksonEntityParser implements EntityParser {    
     private ObjectMapper mapper;
+    private ErrorParser errorParser;
     
     public JacksonEntityParser() {
         mapper = new ObjectMapper();
@@ -29,14 +30,16 @@ public class JacksonEntityParser implements EntityParser {
         mapper.setPropertyNamingStrategy(
                 new PropertyNamingStrategy.PascalCaseStrategy());
         mapper.registerModule(new JodaModule());
-        mapper.setDateFormat(new ISO8601DateFormat());        
+        mapper.setDateFormat(new ISO8601DateFormat());
+        
+        // error parser using jackson libs
+        errorParser = new JacksonErrorParser();
     }
 
     @Override
     public <T> T parseEntity(Class<T> returnType, HttpEntity entity) 
             throws EgreeException {
         try {
-            EntityUtils.consume(entity);
             return mapper.readValue(EntityUtils.toByteArray(entity),
                     returnType);
         } catch (IOException e) {
@@ -51,5 +54,10 @@ public class JacksonEntityParser implements EntityParser {
         } catch (JsonProcessingException e) {
             throw new EgreeException("Failed to convert object to JSON", e);
         }
+    }
+    
+    @Override
+    public ErrorParser getErrorParser() {
+        return errorParser;
     }
 }

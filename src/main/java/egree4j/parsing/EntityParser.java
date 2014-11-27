@@ -36,4 +36,12 @@ public interface EntityParser {
      */
     public String toContent(Object obj) throws EgreeException;
     
+    /**
+     * Returns an ErrorParser capable of parsing errors using similar parsing
+     * methods as the entity parser.
+     * 
+     * @return Error parser for parsing service errors from Egree.
+     */
+    public ErrorParser getErrorParser();
+    
 }
