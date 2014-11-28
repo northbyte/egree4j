@@ -92,11 +92,31 @@ public class MetadataQuery extends Query {
     @Override
     public Map<String, String> getParameters() {
         addCommonProperties();
+        
+        if (fromDate != null) {
+            parameters.put("fromdate", fromDate.toString());
+        }
+        if (toDate != null) {
+            parameters.put("todate", toDate.toString());
+        }
+        if (agentUsername != null) {
+            parameters.put("agentusername", agentUsername);
+        }
+        if (partySocialSecurityNumber != null) {
+            parameters.put("partysocialsecuritynumber", 
+                    partySocialSecurityNumber);
+        }
+        if (partyEmailAdress != null) {
+            parameters.put("partyemailadress", partyEmailAdress);
+        }
+        if (partyMobilePhone != null) {
+            parameters.put("partymobilephone", partyMobilePhone);
+        }        
         if (!metadata.isEmpty()) {
-            processMap("Metadata", metadata, parameters);
+            processMap("metadata", metadata, parameters);
         }
         if (!formfields.isEmpty()) {
-            processMap("FormData", formfields, parameters);
+            processMap("formdata", formfields, parameters);
         }
         return parameters;
     }

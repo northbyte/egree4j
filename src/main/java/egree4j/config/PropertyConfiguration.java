@@ -115,9 +115,9 @@ public class PropertyConfiguration extends DefaultConfiguration {
                 + ", getRestBaseUrl()=" + getRestBaseUrl() + ", getPort()="
                 + getPort() + ", getScheme()=" + getScheme()
                 + ", isTestEnabled()=" + isTestEnabled()
-                + ", getAuthenticationKey()=" + getAuthenticationKey()
-                + ", getAuthenticationPassword()="
-                + getAuthenticationPassword() + ", getEntityParserFactory()="
+                + ", getAuthenticationKey()=***" 
+                + ", getAuthenticationPassword()=***"
+                + ", getEntityParserFactory()="
                 + getEntityParserFactory() + "]";
     }
     

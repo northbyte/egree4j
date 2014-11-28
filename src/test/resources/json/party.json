@@ -6,7 +6,7 @@
   "SocialSecurityNumber": null,
   "SignedOn": "2014-11-02T12:00:00",
   "SignatureData": null,
-  "SignatureUrl": null,
+  "PartyUrl": null,
   "MobilePhone": null,
   "Culture": null,
   "AnyoneCanSign": false

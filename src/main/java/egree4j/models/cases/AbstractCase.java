@@ -240,10 +240,11 @@ public abstract class AbstractCase {
 
     @Override
     public String toString() {
-        return "AbstractCase [id=" + id + ", name=" + name
+        return "AbstractCase [id=" + id + ", name=" + name + ", parties="
+                + parties + ", documents=" + documents
                 + ", allowedSignatureTypes=" + allowedSignatureTypes
                 + ", description=" + description + ", culture=" + culture
-                + ", stakeholders=" + stakeholders + ", metaData=" + metadata
+                + ", stakeholders=" + stakeholders + ", metadata=" + metadata
                 + ", continueUrl=" + continueUrl + ", continueName="
                 + continueName + ", continueAuto=" + continueAuto
                 + ", sendSignRequestEmailToParties="
@@ -251,9 +252,11 @@ public abstract class AbstractCase {
                 + sendFinishEmailToCreator + ", sendFinishEmailToParties="
                 + sendFinishEmailToParties + ", sendRecallEmailToParties="
                 + sendRecallEmailToParties + ", signInSequence="
-                + signInSequence + ", editable=" + isEditable + ", mergeOnSend="
-                + mergeOnSend + ", expireAfterDays=" + expireAfterDays
-                + ", expireOn=" + expireOn + ", remindAfterDays="
-                + remindAfterDays + ", templateId=" + templateId + "]";
-    }    
+                + signInSequence + ", isEditable=" + isEditable
+                + ", mergeOnSend=" + mergeOnSend + ", expireAfterDays="
+                + expireAfterDays + ", expireOn=" + expireOn
+                + ", remindAfterDays=" + remindAfterDays + ", templateId="
+                + templateId + "]";
+    }
+    
 }

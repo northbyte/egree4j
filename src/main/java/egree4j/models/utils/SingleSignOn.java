@@ -11,6 +11,10 @@ public class SingleSignOn {
     private String username;
     private String targetUrl;
     
+    public SingleSignOn(String username) {
+        this.username = username;
+    }
+    
     public String getUsername() {
         return username;
     }

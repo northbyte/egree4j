@@ -10,7 +10,7 @@
       "SocialSecurityNumber": null,
       "SignedOn": null,
       "SignatureData": null,
-      "SignatureUrl": null,
+      "PartyUrl": null,
       "MobilePhone": null,
       "Culture": null,
       "AnyoneCanSign": false

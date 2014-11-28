@@ -5,6 +5,7 @@ import java.util.List;
 import egree4j.EgreeException;
 import egree4j.models.cases.Case;
 import egree4j.models.cases.PendingCase;
+import egree4j.models.searching.MetadataQuery;
 import egree4j.models.searching.Query;
 
 public interface CaseResource {
@@ -22,4 +23,6 @@ public interface CaseResource {
     Case getCase(String id) throws EgreeException;
     
     List<Case> searchCases(Query query) throws EgreeException;
+    
+    List<Case> searchTemplates(MetadataQuery query) throws EgreeException;
 }

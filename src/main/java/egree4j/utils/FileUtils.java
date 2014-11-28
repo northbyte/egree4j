@@ -3,6 +3,7 @@ package egree4j.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -57,8 +58,8 @@ public abstract class FileUtils {
     }
     
     /**
-     * Converts the file to a Base64 encoded data string. The string will be
-     * relatively large as it will whole the full content of the file when
+     * Converts the file to a UTF-8 Base64 encoded data string. The string will
+     * be relatively large as it will whole the full content of the file when
      * returned.
      * 
      * @param file File to read.
@@ -77,9 +78,32 @@ public abstract class FileUtils {
             data = new String(Base64.encodeBase64(out.toByteArray()), 
                     StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new EgreeException("File to Base64 encode file", e);
+            throw new EgreeException("Failed to Base64 encode file", e);
         }
         
         return data;
     }
+    
+    /**
+     * Takes a byte array containing base64 encoded string data and writes it
+     * to the given file pointer. This will automatically decode the data from
+     * its Base64 data and then write it to the file.
+     * 
+     * @param data Data array containing base64 encoded data.
+     * @param file File pointer to write to.
+     * @throws EgreeException If file is a directory or not writable.
+     */
+    public static void decodeAndWrite(byte[] data, File file) 
+            throws EgreeException {
+        if (!file.canWrite()) {
+            throw new EgreeException("Cannot write file");
+        }
+        
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(Base64.decodeBase64(data));
+        } catch (IOException e) {
+            throw new EgreeException("Failed to write Base64 to file", e);
+        }
+    }    
+    
 }

@@ -193,9 +193,10 @@ public class JacksonEntityParserTest extends BaseFileTest {
     
     @Test
     public void testPendingCaseToContent() throws EgreeException {
-        PendingCase pending = new PendingCase();
+        PendingCase pending = new PendingCase("Foo");
         pending.setAgentUsername("Agent");
         pending.setRemindAfterDays(2);
+        pending.getAllowedSignatureTypes().clear();
         pending.getAllowedSignatureTypes().add(SignatureType.SMS);
         pending.setDescription("A description");
         pending.getStakeholders().add("Stakeholder");

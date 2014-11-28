@@ -44,7 +44,7 @@ public class FullTextQuery extends Query {
     public Map<String, String> getParameters() {
         addCommonProperties();
         if (search != null) {
-            parameters.put("Search", search);
+            parameters.put("search", search);
         }
         return parameters;
     }

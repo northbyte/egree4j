@@ -60,16 +60,16 @@ public abstract class Query {
      */
     protected final void addCommonProperties() {
         if (status != null) {
-            parameters.put("Status", status.getName());
+            parameters.put("status", status.getName());
         }
         if (skip != null) {
-            parameters.put("Skip", String.valueOf(skip));
+            parameters.put("skip", String.valueOf(skip));
         }
         if (take != null) {
-            parameters.put("Take", String.valueOf(take));
+            parameters.put("take", String.valueOf(take));
         }
         if (sort != null) {
-            parameters.put("Sort", sort.toQuery());
+            parameters.put("sort", sort.toQuery());
         }
     }
     

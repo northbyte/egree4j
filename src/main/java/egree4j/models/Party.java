@@ -10,10 +10,13 @@ public class Party {
     private String socialSecurityNumber;
     private DateTime signedOn;
     private String signatureData;
-    private String signatureUrl;
+    private String partyUrl;
     private String mobilePhone;
     private String culture;
     private Boolean anyoneCanSign;
+    
+    // Legacy
+    private String signatureUrl;
     
     public String getId() {
         return id;
@@ -57,11 +60,11 @@ public class Party {
     public void setSignatureData(String signatureData) {
         this.signatureData = signatureData;
     }
-    public String getSignatureUrl() {
-        return signatureUrl;
+    public String getPartyUrl() {
+        return partyUrl;
     }
-    public void setSignatureUrl(String signatureUrl) {
-        this.signatureUrl = signatureUrl;
+    public void setPartyUrl(String partyUrl) {
+        this.partyUrl = partyUrl;
     }
     public String getMobilePhone() {
         return mobilePhone;
@@ -82,14 +85,28 @@ public class Party {
         this.anyoneCanSign = anyoneCanSign;
     }
     
+    /**
+     * @deprecated Use {@link #getPartyUrl()}
+     */
+    @Deprecated
+    public String getSignatureUrl() {
+        return signatureUrl;
+    }
+    /**
+     * @deprecated Use {@link #setPartyUrl(String)}
+     */
+    @Deprecated
+    public void setSignatureUrl(String signatureUrl) {
+        this.signatureUrl = signatureUrl;
+    }
     @Override
     public String toString() {
         return "Party [id=" + id + ", name=" + name + ", groupName="
                 + groupName + ", emailAddress=" + emailAddress
                 + ", socialSecurityNumber=" + socialSecurityNumber
                 + ", signedOn=" + signedOn + ", signatureData=" + signatureData
-                + ", signatureUrl=" + signatureUrl + ", mobilePhone="
-                + mobilePhone + ", culture=" + culture + ", anyoneCanSign="
-                + anyoneCanSign + "]";
+                + ", partyUrl=" + partyUrl + ", mobilePhone=" + mobilePhone
+                + ", culture=" + culture + ", anyoneCanSign=" + anyoneCanSign
+                + "]";
     }
 }

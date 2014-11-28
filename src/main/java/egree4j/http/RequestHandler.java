@@ -2,10 +2,14 @@ package egree4j.http;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
+import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -107,14 +111,20 @@ public class RequestHandler {
     public HttpEntity post(String path, HttpEntity body) 
             throws EgreeServiceException, EgreeException {
         try {
-            HttpPost httpPost = new HttpPost(processPath(path));
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme)
+                .setHost(host)
+                .setPort(port)
+                .setPath(processPath(path));
+            
+            HttpPost httpPost = new HttpPost(builder.build());
             httpPost.setEntity(body);
             debug(httpPost);
             CloseableHttpResponse response = client.execute(
                     new HttpHost(host, port, scheme), httpPost, getContext());
             
             return checkResponse(response);
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             throw new EgreeException(
                     "Unable to post request to Egree service", e);
         }
@@ -141,10 +151,14 @@ public class RequestHandler {
                 .setHost(host)
                 .setPort(port)
                 .setPath(processPath(path));
-            if (parameters.length > 0) {
-                builder.setParameters(parameters);
-            }
+            
             HttpPost httpPost = new HttpPost(builder.build());
+            if (parameters.length > 0) {
+                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(
+                        Arrays.asList(parameters), Consts.UTF_8);
+                httpPost.setEntity(entity);
+            }
+            
             debug(httpPost);
             CloseableHttpResponse response = client.execute(
                     new HttpHost(host, port, scheme), httpPost, getContext());
@@ -185,19 +199,15 @@ public class RequestHandler {
      * failed, an exception will be thrown indicating what error was seen
      * on the Egree service side.
      */
-    private HttpEntity checkResponse(CloseableHttpResponse response)
+    private HttpEntity checkResponse(HttpResponse response)
             throws EgreeServiceException, IOException {
-        try {
-            int code = response.getStatusLine().getStatusCode();
-            if (code != HTTP_OK) {
-                ServiceError error = errorParser.parseError(response);
-                throw new EgreeServiceException(error.getErrorCode(), 
-                        error.getMessage(), error.getCode());
-            }
-            return response.getEntity();
-        } finally {
-            response.close();
-        }        
+        int code = response.getStatusLine().getStatusCode();
+        if (code != HTTP_OK) {
+            ServiceError error = errorParser.parseError(response);
+            throw new EgreeServiceException(error.getErrorCode(), 
+                    error.getMessage(), error.getCode());
+        }
+        return response.getEntity();        
     }
     
     /*

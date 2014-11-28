@@ -10,6 +10,10 @@ public class Sort {
     private Name name;
     private Order order;
     
+    public Sort(Name name) {
+        this(name, null);
+    }
+    
     public Sort(Name name, Order order) {
         this.name = name;
         this.order = order;
@@ -30,7 +34,10 @@ public class Sort {
      * @return Valid query parameter string.
      */
     public String toQuery() {
-        return name.toQueryString() + " " + order.name();
+        if (order != null) {
+            return name.toQueryString() + " " + order.name();
+        }
+        return name.toQueryString();
     }
     
     /**
