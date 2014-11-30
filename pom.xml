@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <name>egree4j</name>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>egree</groupId>
+    <groupId>egree4j</groupId>
     <artifactId>egree4j</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>

@@ -4,13 +4,13 @@ import java.util.List;
 
 import egree4j.EgreeException;
 import egree4j.models.cases.Case;
-import egree4j.models.cases.PendingCase;
+import egree4j.models.cases.Draft;
 import egree4j.models.searching.MetadataQuery;
 import egree4j.models.searching.Query;
 
 public interface CaseResource {
 
-    void createCase(PendingCase pendingCase) throws EgreeException;
+    void createCase(Draft draft) throws EgreeException;
     
     void sendCase(Case caseToSend) throws EgreeException;
     

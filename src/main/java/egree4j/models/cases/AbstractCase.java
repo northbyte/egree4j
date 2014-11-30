@@ -8,6 +8,7 @@ import java.util.Map;
 import org.joda.time.DateTime;
 
 import egree4j.models.Party;
+import egree4j.models.Stakeholder;
 import egree4j.models.documents.Document;
 
 /**
@@ -15,7 +16,7 @@ import egree4j.models.documents.Document;
  * not yet been created. This class is the base of both, and has the information
  * that both the cases carries. 
  * 
- * <p>To create a new case, use the {@link PendingCase}. Once a case has been
+ * <p>To create a new case, use the {@link Draft}. Once a case has been
  * created, Egree will return {@link Case}s that can be modified and updated.
  * </p> 
  * 
@@ -30,7 +31,7 @@ public abstract class AbstractCase {
     private List<SignatureType> allowedSignatureTypes = new ArrayList<>();
     private String description;
     private String culture;
-    private List<String> stakeholders = new ArrayList<>();
+    private List<Stakeholder> stakeholders = new ArrayList<>();
     private Map<String, Object> metadata = new HashMap<>();
     
     // Continuation of the case
@@ -40,6 +41,7 @@ public abstract class AbstractCase {
     
     // Information, who and when to send updates
     private Boolean sendSignRequestEmailToParties;
+
     private Boolean sendFinishEmailToCreator;
     private Boolean sendFinishEmailToParties;
     private Boolean sendRecallEmailToParties;
@@ -109,11 +111,11 @@ public abstract class AbstractCase {
         this.culture = culture;
     }
 
-    public List<String> getStakeholders() {
+    public List<Stakeholder> getStakeholders() {
         return stakeholders;
     }
 
-    public void setStakeholders(List<String> stakeholders) {
+    public void setStakeholders(List<Stakeholder> stakeholders) {
         this.stakeholders = stakeholders;
     }
 
@@ -237,6 +239,7 @@ public abstract class AbstractCase {
     public void setTemplateId(String templateId) {
         this.templateId = templateId;
     }
+    
 
     @Override
     public String toString() {

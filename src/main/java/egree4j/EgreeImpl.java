@@ -25,7 +25,7 @@ import egree4j.http.RequestHandler;
 import egree4j.http.RequestParameter;
 import egree4j.models.agents.Agent;
 import egree4j.models.cases.Case;
-import egree4j.models.cases.PendingCase;
+import egree4j.models.cases.Draft;
 import egree4j.models.documents.Document;
 import egree4j.models.searching.MetadataQuery;
 import egree4j.models.searching.Query;
@@ -60,13 +60,13 @@ public class EgreeImpl implements Egree {
     }
     
     @Override
-    public void createCase(PendingCase pendingCase) throws EgreeException {
-        for (Document doc : pendingCase.getDocuments()) {
+    public void createCase(Draft draft) throws EgreeException {
+        for (Document doc : draft.getDocuments()) {
             doc.processContents();
         }
 
         handler.post("/createcase", 
-                new StringEntity(parser.toContent(pendingCase),
+                new StringEntity(parser.toContent(draft),
                         CONTENT_TYPE));
     }
 

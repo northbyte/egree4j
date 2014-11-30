@@ -14,7 +14,8 @@
       "PartyUrl": null,
       "MobilePhone": null,
       "Culture": null,
-      "AnyoneCanSign": false
+      "AnyoneCanSign": false,
+      "SignatureUrl": null
     }
   ],
   "Documents": [
@@ -29,8 +30,8 @@
       "FormFields": {}
     }
   ],
-  "Metadata": null,
-  "Stakeholders": null,
+  "Metadata": {},
+  "Stakeholders": [],
   "AllowedSignatureTypes": [
     "ElectronicId"
   ],

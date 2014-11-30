@@ -14,11 +14,11 @@ import egree4j.models.CaseEventSubscription;
  * @author Johan
  *
  */
-public class PendingCase extends AbstractCase {
+public class Draft extends AbstractCase {
     private String agentUsername;
     private CaseEventSubscription eventCallback;
     
-    protected PendingCase() {
+    protected Draft() {
         
     }
     
@@ -29,7 +29,7 @@ public class PendingCase extends AbstractCase {
      * 
      * @param name Name of the case.
      */
-    public PendingCase(String name) {
+    public Draft(String name) {
         this(name, new ArrayList<SignatureType>(
                 Arrays.asList(SignatureType.TOUCH, SignatureType.SMS)));
     }
@@ -42,7 +42,7 @@ public class PendingCase extends AbstractCase {
      * @param name Name of the case.
      * @param allowedSignatureTypes Types of signatures allowed for the case.
      */
-    public PendingCase(String name, List<SignatureType> allowedSignatureTypes) {
+    public Draft(String name, List<SignatureType> allowedSignatureTypes) {
         setName(name);
         setId(UUID.randomUUID().toString());
         setAllowedSignatureTypes(allowedSignatureTypes);
@@ -90,7 +90,7 @@ public class PendingCase extends AbstractCase {
 
     @Override
     public String toString() {
-        return "PendingCase [agentUsername=" + agentUsername
+        return "Draft [agentUsername=" + agentUsername
                 + ", eventCallback=" + eventCallback + ", toString()="
                 + super.toString() + "]";
     }

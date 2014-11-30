@@ -29,7 +29,7 @@ import egree4j.models.Party;
 import egree4j.models.agents.Agent;
 import egree4j.models.agents.Role;
 import egree4j.models.cases.Case;
-import egree4j.models.cases.PendingCase;
+import egree4j.models.cases.Draft;
 import egree4j.models.cases.Procedure;
 import egree4j.models.cases.SignatureType;
 import egree4j.models.cases.Status;
@@ -192,29 +192,27 @@ public class JacksonEntityParserTest extends BaseFileTest {
     }
     
     @Test
-    public void testPendingCaseToContent() throws EgreeException {
-        PendingCase pending = new PendingCase("Foo");
-        pending.setAgentUsername("Agent");
-        pending.setRemindAfterDays(2);
-        pending.getAllowedSignatureTypes().clear();
-        pending.getAllowedSignatureTypes().add(SignatureType.SMS);
-        pending.setDescription("A description");
-        pending.getStakeholders().add("Stakeholder");
-        pending.getMetadata().put("data", "true");
+    public void testDraftToContent() throws EgreeException {
+        Draft draft = new Draft("Foo");
+        draft.setAgentUsername("Agent");
+        draft.setRemindAfterDays(2);
+        draft.getAllowedSignatureTypes().clear();
+        draft.getAllowedSignatureTypes().add(SignatureType.SMS);
+        draft.setDescription("A description");
+        draft.getMetadata().put("data", "true");
         
         Document doc = new HashDocument("file.pdf", getTestFile());
         doc.processContents();
-        pending.getDocuments().add(doc);
-        pending.getParties().add(new Party());
+        draft.getDocuments().add(doc);
+        draft.getParties().add(new Party());
         
         CaseEventSubscription callback = new CaseEventSubscription();
         callback.setUrl("http://example.com");
         callback.getEvents().add(CaseEvent.FINISHED);
-        pending.setEventCallback(callback);
+        draft.setEventCallback(callback);
         
-        String content = parser.toContent(pending);
+        String content = parser.toContent(draft);
         
-        assertThat(content, containsString("\"Stakeholders\":[\"Stakeholder\"]"));
         assertThat(content, containsString("\"AllowedSignatureTypes\":[\"Sms\"]"));
         assertThat(content, containsString("\"Metadata\":{\"data\":\"true\"}"));
         assertThat(content, containsString("\"Description\":\"A description\""));
@@ -223,26 +221,26 @@ public class JacksonEntityParserTest extends BaseFileTest {
     }
     
     @Test
-    public void testContentToPendingCase() throws EgreeException {
-        String json  = readFile("/json/pendingcase.json");
+    public void testContentToDraft() throws EgreeException {
+        String json  = readFile("/json/draftcase.json");
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
         
-        // Normally this would be a Case, since JSON -> PendingCase never will
+        // Normally this would be a Case, since JSON -> Draft never will
         // be of use in the library. But we test it anyway.
-        PendingCase pending = parser.parseEntity(PendingCase.class, entity);
+        Draft draft = parser.parseEntity(Draft.class, entity);
         
-        assertThat(pending.getParties().size(), is(1));
-        assertThat(pending.getParties().get(0).getName(), is("Michael J. Fox"));
-        assertThat(pending.getParties().get(0).getId(), is("major-party"));
-        assertThat(pending.getDocuments().size(), is(1));
-        assertThat(pending.getDocuments().get(0).getFilename(), is("agreement.pdf"));
-        assertThat(pending.getAllowedSignatureTypes().size(), is(1));
-        assertThat(pending.getAllowedSignatureTypes(), contains(SignatureType.ELECTRONIC_ID));
-        assertThat(pending.getCulture(), is("en-US"));
-        assertThat(pending.getSendFinishEmailToParties(), is(true));
-        assertThat(pending.getName(), is("Emplyoment agreement 4132"));
-        assertThat(pending.getId(), is("5a0e0866-252e-4b79-8a9b-466ea5cca5ce"));
-        assertThat(pending.getAgentUsername(), is("Hulk Hogan"));
+        assertThat(draft.getParties().size(), is(1));
+        assertThat(draft.getParties().get(0).getName(), is("Michael J. Fox"));
+        assertThat(draft.getParties().get(0).getId(), is("major-party"));
+        assertThat(draft.getDocuments().size(), is(1));
+        assertThat(draft.getDocuments().get(0).getFilename(), is("agreement.pdf"));
+        assertThat(draft.getAllowedSignatureTypes().size(), is(1));
+        assertThat(draft.getAllowedSignatureTypes(), contains(SignatureType.ELECTRONIC_ID));
+        assertThat(draft.getCulture(), is("en-US"));
+        assertThat(draft.getSendFinishEmailToParties(), is(true));
+        assertThat(draft.getName(), is("Emplyoment agreement 4132"));
+        assertThat(draft.getId(), is("5a0e0866-252e-4b79-8a9b-466ea5cca5ce"));
+        assertThat(draft.getAgentUsername(), is("Hulk Hogan"));
     }
     
     @Test
