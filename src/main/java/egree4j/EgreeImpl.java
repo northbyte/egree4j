@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -68,6 +69,23 @@ public class EgreeImpl implements Egree {
         handler.post("/createcase", 
                 new StringEntity(parser.toContent(draft),
                         CONTENT_TYPE));
+    }
+    
+    @Override
+    public void createCaseFromTemplate(String templateId, String caseId, 
+            String agentUsername) throws EgreeServiceException, EgreeException {
+        caseId = (caseId == null) ? UUID.randomUUID().toString() : caseId;
+        handler.post("/createcasefromtemplate", 
+                new RequestParameter("templateId", caseId),
+                new RequestParameter("caseId", templateId),
+                new RequestParameter("agentUsername", agentUsername));
+    }
+    
+    @Override
+    public void updateCase(Case caseToUpdate) 
+            throws EgreeServiceException, EgreeException {
+        handler.post("/updatecase", new StringEntity(
+                parser.toContent(caseToUpdate), CONTENT_TYPE));
     }
 
     @Override

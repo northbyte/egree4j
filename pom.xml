@@ -24,6 +24,7 @@
         <java.version>1.7</java.version>
         <java.enforced.version>[1.7,)</java.enforced.version>
         <maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
+        <maven.source.plugin.version>2.4</maven.source.plugin.version>
     
 	    <!-- Base dependencies versions -->
         <apache.httpclient.version>4.3.6</apache.httpclient.version>
@@ -154,6 +155,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
