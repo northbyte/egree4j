@@ -19,11 +19,10 @@ public class MetadataQuery extends Query {
     private DateTime            toDate;
     private String              agentUsername;
     private String              partySocialSecurityNumber;
-    private String              partyEmailAdress;
+    private String              partyEmailAddress;
     private String              partyMobilePhone;
     private Map<String, String> metadata = new HashMap<>();
-    private Map<String, String> formfields = new HashMap<>();
-
+    private Map<String, String> formdata = new HashMap<>();
     
     public DateTime getFromDate() {
         return fromDate;
@@ -57,12 +56,12 @@ public class MetadataQuery extends Query {
         this.partySocialSecurityNumber = partySocialSecurityNumber;
     }
 
-    public String getPartyEmailAdress() {
-        return partyEmailAdress;
+    public String getPartyEmailAddress() {
+        return partyEmailAddress;
     }
 
-    public void setPartyEmailAdress(String partyEmailAdress) {
-        this.partyEmailAdress = partyEmailAdress;
+    public void setPartyEmailAddress(String partyEmailAdress) {
+        this.partyEmailAddress = partyEmailAdress;
     }
 
     public String getPartyMobilePhone() {
@@ -81,12 +80,12 @@ public class MetadataQuery extends Query {
         this.metadata = metadata;
     }
 
-    public Map<String, String> getFormfields() {
-        return formfields;
+    public Map<String, String> getFormData() {
+        return formdata;
     }
 
-    public void setFormfields(Map<String, String> formfields) {
-        this.formfields = formfields;
+    public void setFormData(Map<String, String> formData) {
+        this.formdata = formData;
     }
 
     @Override
@@ -106,8 +105,8 @@ public class MetadataQuery extends Query {
             parameters.put("partysocialsecuritynumber", 
                     partySocialSecurityNumber);
         }
-        if (partyEmailAdress != null) {
-            parameters.put("partyemailadress", partyEmailAdress);
+        if (partyEmailAddress != null) {
+            parameters.put("partyemailaddress", partyEmailAddress);
         }
         if (partyMobilePhone != null) {
             parameters.put("partymobilephone", partyMobilePhone);
@@ -115,8 +114,8 @@ public class MetadataQuery extends Query {
         if (!metadata.isEmpty()) {
             processMap("metadata", metadata, parameters);
         }
-        if (!formfields.isEmpty()) {
-            processMap("formdata", formfields, parameters);
+        if (!formdata.isEmpty()) {
+            processMap("formdata", formdata, parameters);
         }
         return parameters;
     }
@@ -149,9 +148,9 @@ public class MetadataQuery extends Query {
         return "MetadataQuery [fromDate=" + fromDate + ", toDate=" + toDate
                 + ", agentUsername=" + agentUsername
                 + ", partySocialSecurityNumber=" + partySocialSecurityNumber
-                + ", partyEmailAdress=" + partyEmailAdress
+                + ", partyEmailAdress=" + partyEmailAddress
                 + ", partyMobilePhone=" + partyMobilePhone + ", metadata="
-                + metadata + ", formfields=" + formfields + "]";
+                + metadata + ", formfields=" + formdata + "]";
     }
 
 }

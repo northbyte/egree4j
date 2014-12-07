@@ -201,8 +201,7 @@ public class RequestHandler {
      */
     private HttpEntity checkResponse(HttpResponse response)
             throws EgreeServiceException, IOException {
-        int code = response.getStatusLine().getStatusCode();
-        if (code != HTTP_OK) {
+        if (response.getStatusLine().getStatusCode() != HTTP_OK) {
             ServiceError error = errorParser.parseError(response);
             throw new EgreeServiceException(error.getErrorCode(), 
                     error.getMessage(), error.getCode());

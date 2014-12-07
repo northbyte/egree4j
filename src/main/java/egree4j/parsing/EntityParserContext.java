@@ -25,16 +25,16 @@ public final class EntityParserContext {
             throws EgreeException {
         if (FACTORY == null) {
             try {
-                String factory = null;
+                String factoryClass = null;
                 if (conf.getEntityParserFactory() == null 
                         || conf.getEntityParserFactory().isEmpty()) {
-                    factory = DEFAULT_PARSER_FACTORY;
+                    factoryClass = DEFAULT_PARSER_FACTORY;
                 } else {
-                    factory = conf.getEntityParserFactory();
+                    factoryClass = conf.getEntityParserFactory();
                 }
                 
                 FACTORY = (EntityParserFactory) 
-                        Class.forName(factory).newInstance();
+                        Class.forName(factoryClass).newInstance();
             } catch (InstantiationException | IllegalAccessException
                     | ClassNotFoundException e) {
                 throw new EgreeException(
