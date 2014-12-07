@@ -1,0 +1,9 @@
+Johan Nilsson
+Copyright 2014 Johan Nilsson
+
+
+This product includes software developed by:
+
+The Apache Software Foundation (http://www.apache.org/)
+Joda Time (http://www.joda.org/joda-time/)
+Faster XML Jackson (https://github.com/FasterXML/jackson)

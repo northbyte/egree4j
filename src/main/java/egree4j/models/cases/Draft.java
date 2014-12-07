@@ -18,9 +18,13 @@ public class Draft extends AbstractCase {
     private String agentUsername;
     private CaseEventSubscription eventCallback;
     
-    protected Draft() {
-        
-    }
+    /**
+     * Creates a new empty Draft. This should only be used internally.
+     * 
+     * @see #Draft(String)
+     * @see #Draft(String, List)
+     */
+    protected Draft() {}
     
     /**
      * Constructs a new pending case with the given name as the case name. The
