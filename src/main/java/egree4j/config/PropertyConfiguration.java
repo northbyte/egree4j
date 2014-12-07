@@ -14,16 +14,16 @@ import java.util.Properties;
  *
  */
 public class PropertyConfiguration extends DefaultConfiguration {
-    private static final String HOSTNAME = "http.host";
-    private static final String REST_BASE_URL = "restBaseUrl";
-    private static final String TEST_ENABLED = "test.enabled";
+    private static final String HOSTNAME = "egree4j.http.host";
+    private static final String REST_BASE_URL = "egree4j.restBaseUrl";
+    private static final String TEST_ENABLED = "egree4j.test.enabled";
     
-    private static final String PORT = "http.port";
-    private static final String SCHEME = "http.scheme";
-    private static final String ENTITY_PARSER_FACTORY = "http.entityParserFactory";
+    private static final String PORT = "egree4j.http.port";
+    private static final String SCHEME = "egree4j.http.scheme";
+    private static final String ENTITY_PARSER_FACTORY = "egree4j.http.entityParserFactory";
     
-    private static final String AUTHENTICATION_KEY = "auth.key";
-    private static final String AUTHENTICATION_SECRET = "auth.secret";
+    private static final String AUTHENTICATION_KEY = "egree4j.auth.key";
+    private static final String AUTHENTICATION_SECRET = "egree4j.auth.secret";
     
     private static final String PROPERTY_FILE = "egree4j.properties";
     
