@@ -2,9 +2,9 @@ Egree4j - Java library for Egree
 ================================
 
 This is a Java library to easily integrate the digital signature service 
-<a href="https://egree.com/">Egree</a> with your java application. It translates
-the Egree web service calls to Java, which allows any user to invoke the calls
-without configuring the HTTP/Security/Translations around it.
+[Egree](https://egree.com/) with your java application. It translates
+the Egree web service calls to Java, which allows any java user to invoke the 
+calls with minimal configuration of the HTTP/Security/Translations around it.
 
 The library is built for the v2 of their API.
 
@@ -45,4 +45,10 @@ The minimum required settings is:
 Usage
 -----
 
-TODO
+Everything in the library revolves around the Egree service interface. A caller
+can obtain it by
+
+    Egree egree = EgreeFactory.getInstance();
+
+Once this has been initialized calling the Egree service is the same as calling
+the related method in the Egree interface.
