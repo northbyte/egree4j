@@ -1,7 +1,5 @@
 package egree4j.parsing;
 
-import org.apache.http.HttpEntity;
-
 import egree4j.EgreeException;
 
 /**
@@ -19,11 +17,11 @@ public interface EntityParser {
      * that can be used.
      * 
      * @param returnType Class of object that is expected to be returned.
-     * @param entity Entity retrieved from the HTTP response.
+     * @param entity Entity data retrieved from the HTTP response.
      * @return Object mapped from the given entity.
      * @throws EgreeException
      */
-    public <T> T parseEntity(Class<T> returnType, HttpEntity entity) 
+    public <T> T parseEntity(Class<T> returnType, byte[] entity) 
             throws EgreeException;
     
     /**

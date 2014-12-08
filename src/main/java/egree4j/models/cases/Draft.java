@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import egree4j.models.CaseEventSubscription;
-
 /**
  * A pending case is a case that has not yet been pushed to the Egree service.
  * This is only used whenever a client wants to create a case.
@@ -16,7 +14,6 @@ import egree4j.models.CaseEventSubscription;
  */
 public class Draft extends AbstractCase {
     private String agentUsername;
-    private CaseEventSubscription eventCallback;
     
     /**
      * Creates a new empty Draft. This should only be used internally.
@@ -71,31 +68,11 @@ public class Draft extends AbstractCase {
     public void setAgentUsername(String agentUsername) {
         this.agentUsername = agentUsername;
     }
-    
-    /**
-     * Returns the subscription of the events to be notified whenever the
-     * states change to specified {@code CaseEvent}s.
-     * 
-     * @return Subscription to be used on the case.
-     */
-    public CaseEventSubscription getEventCallback() {
-        return eventCallback;
-    }
-    
-    /**
-     * Server side callback when one of your subscribed events occur.
-     * 
-     * @param eventCallback The callback to use whenever one of the requested
-     * events occur.
-     */
-    public void setEventCallback(CaseEventSubscription eventCallback) {
-        this.eventCallback = eventCallback;
-    }
 
     @Override
     public String toString() {
-        return "Draft [agentUsername=" + agentUsername
-                + ", eventCallback=" + eventCallback + ", toString()="
+        return "Draft [agentUsername=" + agentUsername + ", toString()="
                 + super.toString() + "]";
     }
+
 }

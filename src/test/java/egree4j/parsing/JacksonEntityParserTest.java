@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
@@ -68,11 +69,11 @@ public class JacksonEntityParserTest extends BaseFileTest {
     }
     
     @Test
-    public void testContentToParty() throws EgreeException {
+    public void testContentToParty() throws EgreeException, IOException {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         String json  = readFile("/json/party.json");
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        Party party = parser.parseEntity(Party.class, entity);
+        Party party = parser.parseEntity(Party.class, EntityUtils.toByteArray(entity));
         DateTime correctTime = new DateTime(2014,11,2,12,0);
         
         assertThat(party.getName(), equalTo("Michael J. Fox"));
@@ -97,10 +98,11 @@ public class JacksonEntityParserTest extends BaseFileTest {
     }
     
     @Test
-    public void testContentToCaseEventSubscription() throws EgreeException {
+    public void testContentToCaseEventSubscription() throws EgreeException, IOException {
         String json  = readFile("/json/caseeventsubscription.json");
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        CaseEventSubscription sub = parser.parseEntity(CaseEventSubscription.class, entity);
+        CaseEventSubscription sub = parser.parseEntity(CaseEventSubscription.class, 
+                EntityUtils.toByteArray(entity));
         
         assertThat(sub.getUrl(), is("http://example.com"));
         assertThat(sub.getEvents().size(), is(2));
@@ -122,10 +124,10 @@ public class JacksonEntityParserTest extends BaseFileTest {
     }
     
     @Test
-    public void testContentToAgent() throws EgreeException {
+    public void testContentToAgent() throws EgreeException, IOException {
         String json  = readFile("/json/agent.json");
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        Agent agent = parser.parseEntity(Agent.class, entity);
+        Agent agent = parser.parseEntity(Agent.class, EntityUtils.toByteArray(entity));
         
         assertThat(agent.getName(), is("John Smith"));
         assertThat(agent.getRole(), is(Role.LIMITED_AGENT));
@@ -151,10 +153,10 @@ public class JacksonEntityParserTest extends BaseFileTest {
     }
     
     @Test
-    public void testContentToHashDocument() throws EgreeException {
+    public void testContentToHashDocument() throws EgreeException, IOException {
         String json  = readFile("/json/hashdocument.json");
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        Document doc = parser.parseEntity(BaseDocument.class, entity);
+        Document doc = parser.parseEntity(BaseDocument.class, EntityUtils.toByteArray(entity));
         
         assertThat(doc.getData(), is(nullValue()));
         assertThat(doc.getHash(), equalTo("0a6dfe0ff3f20b3cf09c7ae9fc7e230d88597c9f198d8f2c3eb1d6a7f1f750eb86907c42a5fa4300b6449477a50a1316e7af70afdee46e352db6d4084a362839"));
@@ -179,10 +181,10 @@ public class JacksonEntityParserTest extends BaseFileTest {
     }
     
     @Test
-    public void testContentToDataDocument() throws EgreeException {
+    public void testContentToDataDocument() throws EgreeException, IOException {
         String json  = readFile("/json/datadocument.json");
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        Document doc = parser.parseEntity(BaseDocument.class, entity);
+        Document doc = parser.parseEntity(BaseDocument.class, EntityUtils.toByteArray(entity));
         
         assertThat(doc.getHash(), equalTo("0a6dfe0ff3f20b3cf09c7ae9fc7e230d88597c9f198d8f2c3eb1d6a7f1f750eb86907c42a5fa4300b6449477a50a1316e7af70afdee46e352db6d4084a362839"));
         assertThat(doc.getData(), is("1lbmRvYmoNc3RhcnR4cmVmDTYxOTYwMA0lJUVPRg0="));
@@ -221,13 +223,13 @@ public class JacksonEntityParserTest extends BaseFileTest {
     }
     
     @Test
-    public void testContentToDraft() throws EgreeException {
+    public void testContentToDraft() throws EgreeException, IOException {
         String json  = readFile("/json/draftcase.json");
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
         
         // Normally this would be a Case, since JSON -> Draft never will
         // be of use in the library. But we test it anyway.
-        Draft draft = parser.parseEntity(Draft.class, entity);
+        Draft draft = parser.parseEntity(Draft.class, EntityUtils.toByteArray(entity));
         
         assertThat(draft.getParties().size(), is(1));
         assertThat(draft.getParties().get(0).getName(), is("Michael J. Fox"));
@@ -270,11 +272,11 @@ public class JacksonEntityParserTest extends BaseFileTest {
     }
     
     @Test
-    public void testContentToCase() throws EgreeException {
+    public void testContentToCase() throws EgreeException, IOException {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         String json  = readFile("/json/case.json");
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        Case current = parser.parseEntity(Case.class, entity);
+        Case current = parser.parseEntity(Case.class, EntityUtils.toByteArray(entity));
         
         DateTime createdOn = new DateTime(2048,12,12,13,37,00);
         assertThat(current.getCreatedOn(), equalTo(createdOn));

@@ -30,12 +30,12 @@
       "FormFields": {}
     }
   ],
-  "Metadata": {},
-  "Stakeholders": [],
   "AllowedSignatureTypes": [
     "ElectronicId"
   ],
-  "Procedure": "Default",
+  "Description": null,
+  "Stakeholders": [],
+  "Metadata": {},
   "ContinueUrl": null,
   "ContinueName": null,
   "ContinueAuto": false,
@@ -43,21 +43,21 @@
   "SendFinishEmailToCreator": true,
   "SendFinishEmailToParties": true,
   "SendRecallEmailToParties": true,
-  "IdentityCheck": false,
-  "CreatedOn": "2048-12-12T13:37:00",
-  "Description": null,
   "Culture": "en-US",
   "SignInSequence": false,
+  "IdentityCheck": false,
   "IsEditable": false,
   "MergeOnSend": false,
   "ExpireAfterDays": 0,
   "ExpireOn": null,
   "RemindAfterDays": 0,
   "RemindOn": null,
+  "CreatedOn": "2048-12-12T13:37:00",
   "TemplateId": null,
   "SentOn": null,
   "ReminderSentOn": null,
   "Hash": null,
   "AgentUrl": null,
-  "PublicUrl": null
+  "EventCallback": null,
+  "Procedure": "Default"
 }

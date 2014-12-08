@@ -2,9 +2,6 @@ package egree4j.parsing;
 
 import java.io.IOException;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.util.EntityUtils;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -37,11 +34,10 @@ public class JacksonEntityParser implements EntityParser {
     }
 
     @Override
-    public <T> T parseEntity(Class<T> returnType, HttpEntity entity) 
+    public <T> T parseEntity(Class<T> returnType, byte[] entity) 
             throws EgreeException {
         try {
-            return mapper.readValue(EntityUtils.toByteArray(entity),
-                    returnType);
+            return mapper.readValue(entity, returnType);
         } catch (IOException e) {
             throw new EgreeException("Failed to read response content", e);
         }

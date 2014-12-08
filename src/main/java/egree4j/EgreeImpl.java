@@ -1,6 +1,6 @@
 package egree4j;
 
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -9,12 +9,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +41,7 @@ import egree4j.parsing.ErrorParser;
  */
 public class EgreeImpl implements Egree {
     private static final Logger logger = LoggerFactory.getLogger(EgreeImpl.class);
-    private static final ContentType CONTENT_TYPE = ContentType.create("application/json", "UTF-8");
+    private static final ContentType CONTENT_TYPE = ContentType.create("application/json", StandardCharsets.UTF_8);
     
     private Configuration       config;
     private AuthFactory         authentication;
@@ -67,8 +65,7 @@ public class EgreeImpl implements Egree {
         }
 
         handler.post("/createcase", 
-                new StringEntity(parser.toContent(draft),
-                        CONTENT_TYPE));
+                new StringEntity(parser.toContent(draft), CONTENT_TYPE));
     }
     
     @Override
@@ -84,8 +81,8 @@ public class EgreeImpl implements Egree {
     @Override
     public void updateCase(Case caseToUpdate) 
             throws EgreeServiceException, EgreeException {
-        handler.post("/updatecase", new StringEntity(
-                parser.toContent(caseToUpdate), CONTENT_TYPE));
+        handler.post("/updatecase", 
+                new StringEntity(parser.toContent(caseToUpdate), CONTENT_TYPE));
     }
 
     @Override
@@ -128,7 +125,7 @@ public class EgreeImpl implements Egree {
             idx++;
         }
         
-        HttpEntity result = handler.get("/findcases", parameters);
+        byte[] result = handler.get("/findcases", parameters);
         return Arrays.asList(parser.parseEntity(Case[].class, result));
     }
     
@@ -147,7 +144,7 @@ public class EgreeImpl implements Egree {
             idx++;
         }
         
-        HttpEntity result = handler.get("/findtemplates", parameters);
+        byte[] result = handler.get("/findtemplates", parameters);
         return Arrays.asList(parser.parseEntity(Case[].class, result));
     }
 
@@ -165,27 +162,19 @@ public class EgreeImpl implements Egree {
         sso.setTargetUrl(targetUrl);
         
         try {
-            return EntityUtils.toString(handler.post("/createssoticket", 
-                    new StringEntity(parser.toContent(sso), CONTENT_TYPE)));
-        } catch (UnsupportedCharsetException | ParseException | IOException e) {
+            byte[] result = handler.post("/createssoticket", 
+                    new StringEntity(parser.toContent(sso), CONTENT_TYPE));
+            return new String(result, StandardCharsets.UTF_8);
+        } catch (UnsupportedCharsetException | ParseException e) {
             throw new EgreeException("Unexpected return data from service", e);
         }
     }
 
     @Override
     public byte[] getDocument(String id) throws EgreeException {
-        HttpEntity entity = handler.get("/getdocumentdata", 
+        logger.debug("Reading document from response entity ");
+        return handler.get("/getdocumentdata", 
                 new RequestParameter("documentId", id));
-        if (entity != null) {
-            logger.debug("Reading document from response entity "
-                    + entity.toString());
-            try {
-                return EntityUtils.toByteArray(entity);
-            } catch (IOException e) {
-                throw new EgreeException("Download of document failed", e);
-            }
-        }
-        throw new EgreeException("No data received!");
     }
     
 

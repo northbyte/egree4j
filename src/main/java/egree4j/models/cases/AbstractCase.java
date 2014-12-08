@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
+import egree4j.models.CaseEventSubscription;
 import egree4j.models.Party;
 import egree4j.models.Stakeholder;
 import egree4j.models.documents.Document;
@@ -33,6 +34,7 @@ public abstract class AbstractCase {
     private String culture;
     private List<Stakeholder> stakeholders = new ArrayList<>();
     private Map<String, Object> metadata = new HashMap<>();
+    private CaseEventSubscription eventCallback;
     
     // Continuation of the case
     private String continueUrl;
@@ -126,7 +128,25 @@ public abstract class AbstractCase {
     public void setMetadata(Map<String, Object> metaData) {
         this.metadata = metaData;
     }
-
+    /**
+     * Returns the subscription of the events to be notified whenever the
+     * states change to specified {@code CaseEvent}s.
+     * 
+     * @return Subscription to be used on the case.
+     */
+    public CaseEventSubscription getEventCallback() {
+        return eventCallback;
+    }
+    
+    /**
+     * Server side callback when one of your subscribed events occur.
+     * 
+     * @param eventCallback The callback to use whenever one of the requested
+     * events occur.
+     */
+    public void setEventCallback(CaseEventSubscription eventCallback) {
+        this.eventCallback = eventCallback;
+    }
     public String getContinueUrl() {
         return continueUrl;
     }
@@ -239,7 +259,6 @@ public abstract class AbstractCase {
     public void setTemplateId(String templateId) {
         this.templateId = templateId;
     }
-    
 
     @Override
     public String toString() {
@@ -248,8 +267,9 @@ public abstract class AbstractCase {
                 + ", allowedSignatureTypes=" + allowedSignatureTypes
                 + ", description=" + description + ", culture=" + culture
                 + ", stakeholders=" + stakeholders + ", metadata=" + metadata
-                + ", continueUrl=" + continueUrl + ", continueName="
-                + continueName + ", continueAuto=" + continueAuto
+                + ", eventCallback=" + eventCallback + ", continueUrl="
+                + continueUrl + ", continueName=" + continueName
+                + ", continueAuto=" + continueAuto
                 + ", sendSignRequestEmailToParties="
                 + sendSignRequestEmailToParties + ", sendFinishEmailToCreator="
                 + sendFinishEmailToCreator + ", sendFinishEmailToParties="

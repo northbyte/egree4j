@@ -7,7 +7,6 @@ import java.util.Arrays;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -17,6 +16,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +72,7 @@ public class RequestHandler {
      * invalid response, indicating something is incorrect.
      * @throws EgreeException If a connection or http error is occurred.
      */
-    public HttpEntity get(String path, NameValuePair... parameters) 
+    public byte[] get(String path, NameValuePair... parameters) 
             throws EgreeServiceException, EgreeException {
         try {
             URIBuilder builder = new URIBuilder();
@@ -108,7 +108,7 @@ public class RequestHandler {
      * invalid response, indicating something is incorrect.
      * @throws EgreeException If a connection or http error is occured.
      */
-    public HttpEntity post(String path, HttpEntity body) 
+    public byte[] post(String path, HttpEntity body) 
             throws EgreeServiceException, EgreeException {
         try {
             URIBuilder builder = new URIBuilder();
@@ -143,7 +143,7 @@ public class RequestHandler {
      * invalid response, indicating something is incorrect.
      * @throws EgreeException If a connection or http error is occured.
      */
-    public HttpEntity post(String path, NameValuePair... parameters) 
+    public byte[] post(String path, NameValuePair... parameters) 
             throws EgreeServiceException, EgreeException {
         try {
             URIBuilder builder = new URIBuilder();
@@ -167,7 +167,7 @@ public class RequestHandler {
         } catch (IOException | URISyntaxException e) {
             throw new EgreeException(
                     "Unable to send request to Egree service", e);
-        }
+        } 
     }
     
     /*
@@ -199,14 +199,22 @@ public class RequestHandler {
      * failed, an exception will be thrown indicating what error was seen
      * on the Egree service side.
      */
-    private HttpEntity checkResponse(HttpResponse response)
+    private byte[] checkResponse(CloseableHttpResponse response)
             throws EgreeServiceException, IOException {
-        if (response.getStatusLine().getStatusCode() != HTTP_OK) {
-            ServiceError error = errorParser.parseError(response);
-            throw new EgreeServiceException(error.getErrorCode(), 
-                    error.getMessage(), error.getCode());
+        try {
+            if (response.getStatusLine().getStatusCode() != HTTP_OK) {
+                ServiceError error = errorParser.parseError(response);
+                throw new EgreeServiceException(error.getErrorCode(), 
+                        error.getMessage(), error.getCode());
+            }
+            
+            byte[] data = EntityUtils.toByteArray(response.getEntity());
+            EntityUtils.consume(response.getEntity());  
+            return data;
+        } finally {
+            response.close();
         }
-        return response.getEntity();        
+        
     }
     
     /*
