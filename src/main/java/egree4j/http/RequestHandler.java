@@ -67,7 +67,7 @@ public class RequestHandler {
      * 
      * @param path Path to resource, for example /getcase.
      * @param parameters Optional parameters.
-     * @return An http entity that has been received from the get.
+     * @return Entity content as raw byte data.
      * @throws EgreeServiceException If the Egree service sent a readable 
      * invalid response, indicating something is incorrect.
      * @throws EgreeException If a connection or http error is occurred.
@@ -103,7 +103,7 @@ public class RequestHandler {
      * 
      * @param path Path to resource, for example /addcase.
      * @param body The body of the HTTP post to send.
-     * @return An http entity that has been received from the post.
+     * @return Entity content as raw byte data.
      * @throws EgreeServiceException If the Egree service sent a readable 
      * invalid response, indicating something is incorrect.
      * @throws EgreeException If a connection or http error is occured.
@@ -138,7 +138,7 @@ public class RequestHandler {
      * @param path Path to resource, for example /addcase.
      * @param parameters Post parameters that should be attached directly to the
      * HTTP Post content body.
-     * @return An http entity that has been received from the post.
+     * @return Entity content as raw byte data.
      * @throws EgreeServiceException If the Egree service sent a readable 
      * invalid response, indicating something is incorrect.
      * @throws EgreeException If a connection or http error is occured.
@@ -198,6 +198,8 @@ public class RequestHandler {
      * response code is valid before it tries to read the entity data. If this
      * failed, an exception will be thrown indicating what error was seen
      * on the Egree service side.
+     * 
+     * This will consume the entity and close the response connection.
      */
     private byte[] checkResponse(CloseableHttpResponse response)
             throws EgreeServiceException, IOException {
