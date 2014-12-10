@@ -12,23 +12,23 @@ import egree4j.models.cases.Status;
  * @author Johan
  *
  */
-public class FullTextQuery extends Query {
+public class FulltextQuery extends Query {
     private String search;
     
-    public FullTextQuery(String query, Status status) {
+    public FulltextQuery(String query, Status status) {
         this.search = query;
         this.status = status;
     }
     
-    public FullTextQuery(String query) {
+    public FulltextQuery(String query) {
         this(query, null);
     }
     
-    public FullTextQuery(Status status) {
+    public FulltextQuery(Status status) {
         this(null, status);
     }
     
-    public FullTextQuery() {
+    public FulltextQuery() {
         this(null, null);
     }
 
@@ -51,6 +51,6 @@ public class FullTextQuery extends Query {
 
     @Override
     public String toString() {
-        return "FullTextQuery [search=" + search + "]";
+        return "FulltextQuery [search=" + search + "]";
     }
 }

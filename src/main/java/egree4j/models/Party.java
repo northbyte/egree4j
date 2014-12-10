@@ -84,18 +84,9 @@ public class Party {
     public void setAnyoneCanSign(Boolean anyoneCanSign) {
         this.anyoneCanSign = anyoneCanSign;
     }
-    
-    /**
-     * @deprecated Use {@link #getPartyUrl()}
-     */
-    @Deprecated
     public String getSignatureUrl() {
         return signatureUrl;
     }
-    /**
-     * @deprecated Use {@link #setPartyUrl(String)}
-     */
-    @Deprecated
     public void setSignatureUrl(String signatureUrl) {
         this.signatureUrl = signatureUrl;
     }

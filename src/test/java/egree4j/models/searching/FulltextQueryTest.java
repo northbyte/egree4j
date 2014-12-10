@@ -10,13 +10,13 @@ import org.junit.Test;
 
 import egree4j.models.cases.Status;
 
-public class FullTextQueryTest {
+public class FulltextQueryTest {
     
-    private FullTextQuery query;
+    private FulltextQuery query;
     
     @Test
     public void testSingleParameterQueries() {
-        query = new FullTextQuery("query");
+        query = new FulltextQuery("query");
         
         assertThat(query.getSearch(), is("query"));
         assertThat(query.getStatus(), is(nullValue()));
@@ -31,7 +31,7 @@ public class FullTextQueryTest {
     
     @Test
     public void testMultiParameterQuery() {
-        query = new FullTextQuery("anotherQuery", Status.SENT);
+        query = new FulltextQuery("anotherQuery", Status.SENT);
         
         assertThat(query.getSearch(), is("anotherQuery"));
         assertThat(query.getStatus(), is(Status.SENT));
@@ -47,7 +47,7 @@ public class FullTextQueryTest {
     
     @Test
     public void testQueryWithPageParameters() {
-        query = new FullTextQuery("newQuery", Status.FINISHED);
+        query = new FulltextQuery("newQuery", Status.FINISHED);
         query.setSkip(10);
         query.setSort(new Sort(Sort.Name.CREATED, Sort.Order.ASC));
         query.setTake(10);

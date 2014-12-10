@@ -14,7 +14,6 @@ import egree4j.EgreeException;
 
 public class HashDocumentTest extends BaseFileTest {
     
-    
     private HashDocument doc;
     
     @Before
