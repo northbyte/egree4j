@@ -1,13 +1,13 @@
 package egree4j.utils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -68,17 +68,13 @@ public abstract class FileUtils {
      */
     public static String encode(File file) throws EgreeException {
         String data = null;
-        try (FileInputStream fis = new FileInputStream(file);
-                ByteArrayOutputStream out = new ByteArrayOutputStream()){
-            int c;
-            while ((c = fis.read()) != -1) {
-                out.write(c);
-            }
-            
-            data = new String(Base64.encodeBase64(out.toByteArray()), 
-                    StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new EgreeException("Failed to Base64 encode file", e);
+        
+        try {
+            Path path = Paths.get(file.getAbsolutePath());
+            data = new String(Base64.encodeBase64(
+                    Files.readAllBytes(path)), StandardCharsets.UTF_8);
+        } catch (IOException ioe) {
+            throw new EgreeException("Failed to Base64 encode file", ioe);
         }
         
         return data;
