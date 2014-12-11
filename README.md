@@ -1,5 +1,6 @@
-Egree4j - Java library for Egree
-================================
+# Egree4j - Java library for Egree
+
+![Build Status](https://travis-ci.org/northbyte/egree4j.svg "Build status")
 
 This is a Java library to easily integrate the digital signature service 
 [Egree](https://egree.com/) with your java application. It translates
@@ -11,8 +12,7 @@ The library is built for the v2 of their API.
 Currently the library supports all of the current endpoints in the Egree
 service.
 
-Notice
-------
+## Notice
 
 You will still need a subscription with the Egree service!
 
@@ -20,8 +20,7 @@ Since the v2 of the Egree service is still under beta it can change without
 notice. This means that there might be occasions when the client needs to be
 updated but me not knowing it. Drop me a message or a pull request if so.
 
-Installation
-------------
+## Installation
 
 Using Maven 3.2.1, clone the repository and run
 
@@ -46,8 +45,7 @@ SBT:
 
     libraryDependencies += "com.github.northbyte" %% "egree4j" % "1.0.0-SNAPSHOT"
 
-Configuration
--------------
+## Configuration
 
 To be able to work with the Egree service you need to authorize yourself using
 the API keys generated from Egree. The Egree4j will look for configuration
@@ -73,8 +71,8 @@ By far the most convenient way is to have it in a egree4j.properties file that
 you can stow away in your your .war-file or on disk.
 
 
-Usage
------
+## Usage
+
 
 Everything in the library revolves around the Egree service interface. A caller
 can obtain it by
@@ -107,28 +105,28 @@ These can be either done by pushing the whole document with its data in a
 DataDocument or by only pushing the document hash in a HashDocument. 
 HashDocuments are generally used when the document is secret/protected but a
 signature is still required.
+
 Creating a case is done by creating a new Draft:
+
+    // Create a new Case by using a Draft
+    Draft newCase = new Draft("My case name");
+    
+Then we can just append the data we want:
 
     // Create the party
     Party party = new Party();
     party.setEmailAddress("john.doe@example.com");
     party.setName("John Doe");
+    party.setCulture(Culture.EN);
     
     // Create the document
     File f = new File("/home/me/HouseContract.pdf");
     Document document = new DataDocument("HouseContract.pdf", f);
     document.setType(DocumentType.ORIGINAL);
-    
-    // Create a receipt 
-    File f2 = new File("/home/me/Receipt.pdf");
-    Document document = new DataDocument("Receipt.pdf", f2);
-    document.setType(DocumentType.RECEIPT);
-    
-    // Create a new Case by using a Draft
-    Draft newCase = new Draft("My case name");
+   
+    // Add the party and document
     newCase.getParties().add(party);
     newCase.getDocuments().add(document);
-    newCase.getDocuments().add(receipt);
     
     // Push it to Egree. Once this is done, the Draft instance
     // is no longer needed. 

@@ -250,7 +250,6 @@ public class JacksonEntityParserTest extends BaseFileTest {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         Case current = new Case();
         current.setProcedure(Procedure.PAYLOAD);
-        current.setCreatedOn(new DateTime(2011,01,01,11,11));
         current.setExpireOn(new DateTime(2020,12,10,20,20));
         current.setStatus(Status.REJECTED);
         current.setCulture("en-US");
@@ -262,7 +261,6 @@ public class JacksonEntityParserTest extends BaseFileTest {
         current.getParties().add(new Party());
         
         String content = parser.toContent(current);
-        assertThat(content, containsString("\"CreatedOn\":\"2011-01-01T11:11:00.000Z\""));
         assertThat(content, containsString("\"Description\":\"A description\""));
         assertThat(content, containsString("\"Culture\":\"en-US\""));
         assertThat(content, containsString("\"Filename\":\"file.pdf\""));

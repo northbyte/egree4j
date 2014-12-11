@@ -3,10 +3,7 @@ package egree4j;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.apache.http.NameValuePair;
@@ -22,6 +19,7 @@ import egree4j.http.DefaultHttpClientFactory;
 import egree4j.http.HttpClientFactory;
 import egree4j.http.RequestHandler;
 import egree4j.http.RequestParameter;
+import egree4j.http.RequestParameterMapper;
 import egree4j.models.agents.Agent;
 import egree4j.models.cases.Case;
 import egree4j.models.cases.Draft;
@@ -113,17 +111,8 @@ public class EgreeImpl implements Egree {
 
     @Override
     public List<Case> searchCases(Query query) throws EgreeException {
-        Map<String, String> params = query.getParameters();
-        NameValuePair[] parameters = new NameValuePair[params.size()];
-        
-        int idx = 0;
-        Iterator<Entry<String, String>> values = params.entrySet().iterator();
-        while (values.hasNext()) {
-            Entry<String, String> value = values.next();
-            parameters[idx] = new RequestParameter(value.getKey(), 
-                    value.getValue());
-            idx++;
-        }
+        NameValuePair[] parameters = RequestParameterMapper.unwrap(
+                query.getParameters());
         
         byte[] result = handler.get("/findcases", parameters);
         return Arrays.asList(parser.parseEntity(Case[].class, result));
@@ -132,17 +121,8 @@ public class EgreeImpl implements Egree {
     @Override
     public List<Case> searchTemplates(MetadataQuery query) 
         throws EgreeException {
-        Map<String, String> params = query.getParameters();
-        NameValuePair[] parameters = new NameValuePair[params.size()];
-        
-        int idx = 0;
-        Iterator<Entry<String, String>> values = params.entrySet().iterator();
-        while (values.hasNext()) {
-            Entry<String, String> value = values.next();
-            parameters[idx] = new RequestParameter(value.getKey(), 
-                    value.getValue());
-            idx++;
-        }
+        NameValuePair[] parameters = RequestParameterMapper.unwrap(
+                query.getParameters());
         
         byte[] result = handler.get("/findtemplates", parameters);
         return Arrays.asList(parser.parseEntity(Case[].class, result));

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import egree4j.models.CaseEventSubscription;
 import egree4j.models.Party;
@@ -236,12 +237,24 @@ public abstract class AbstractCase {
         this.expireAfterDays = expireAfterDays;
     }
 
+    /**
+     * Returns the date when this case expires. Is always in UTC.
+     * 
+     * @return UTC date when the case expires.
+     */
     public DateTime getExpireOn() {
         return expireOn;
     }
 
+    /**
+     * Sets the date when the case should expire on. This will always be in 
+     * UTC and will be converted to UTC when set.
+     * 
+     * @param expireOn Date when to expire this case.
+     */
     public void setExpireOn(DateTime expireOn) {
-        this.expireOn = expireOn;
+        this.expireOn = (expireOn != null) 
+                ? expireOn.toDateTime(DateTimeZone.UTC) : expireOn;
     }
 
     public Integer getRemindAfterDays() {
