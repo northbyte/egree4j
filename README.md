@@ -1,24 +1,18 @@
 # Egree4j - Java library for Egree
 
-![Build Status](https://travis-ci.org/northbyte/egree4j.svg "Build status")
+[![Build Status](https://travis-ci.org/northbyte/egree4j.svg?branch=master)](https://travis-ci.org/northbyte/egree4j)
 
-This is a Java library to easily integrate the digital signature service 
-[Egree](https://egree.com/) with your java application. It translates
-the Egree web service calls to Java, which allows any java user to invoke the 
-calls with minimal configuration of the HTTP/Security/Translations around it.
+This is a Java library to easily integrate the digital signature service [Egree](https://egree.com/) with your java application. It translates the Egree web service calls to Java, which allows any java user to invoke the calls with minimal configuration of the HTTP/Security/Translations around it.
 
 The library is built for the v2 of their API.
 
-Currently the library supports all of the current endpoints in the Egree
-service.
+Currently the library supports all of the current endpoints in the Egree service.
 
 ## Notice
 
 You will still need a subscription with the Egree service!
 
-Since the v2 of the Egree service is still under beta it can change without
-notice. This means that there might be occasions when the client needs to be
-updated but me not knowing it. Drop me a message or a pull request if so.
+Since the v2 of the Egree service is still under beta it can change without notice. This means that there might be occasions when the client needs to be updated but me not knowing it. Drop me a message or a pull request if so.
 
 ## Installation
 
@@ -26,8 +20,7 @@ Using Maven 3.2.1, clone the repository and run
 
     mvn clean install
 
-This will install the current snapshot version working with the latest version
-of the Egree service. Then you can include it in your project.
+This will install the current snapshot version working with the latest version of the Egree service. Then you can include it in your project.
 
 Maven:
 
@@ -47,9 +40,7 @@ SBT:
 
 ## Configuration
 
-To be able to work with the Egree service you need to authorize yourself using
-the API keys generated from Egree. The Egree4j will look for configuration
-settings passed as parameters to the service or in the egree4j.properties file.
+To be able to work with the Egree service you need to authorize yourself using the API keys generated from Egree. The Egree4j will look for configuration settings passed as parameters to the service or in the egree4j.properties file.
 
 The minimum required settings is:
 
@@ -67,21 +58,17 @@ Or you can in for example your java code set it:
     
     Egree egree = EgreeFactory.getInstance();
  
-By far the most convenient way is to have it in a egree4j.properties file that
-you can stow away in your your .war-file or on disk.
+By far the most convenient way is to have it in a egree4j.properties file that you can stow away in your your .war-file or on disk.
 
 
 ## Usage
 
 
-Everything in the library revolves around the Egree service interface. A caller
-can obtain it by
+Everything in the library revolves around the Egree service interface. A caller can obtain it by
 
     Egree egree = EgreeFactory.getInstance();
 
-Once this has been initialized calling the Egree service is the same as calling
-the related method in the Egree interface. Using the obtained Egree class we can
-then create, get, edit or delete cases. Some examples.
+Once this has been initialized calling the Egree service is the same as calling the related method in the Egree interface. Using the obtained Egree class we can then create, get, edit or delete cases. Some examples.
 
 Searching for Cases in the Egree service that you have access to:
 
@@ -98,13 +85,7 @@ Searching for Cases in the Egree service that you have access to:
     metaQuery.getMetadata().put("licensing", "open");
     List<Case> cases = egree.searchCases(metaQuery);
     
-Whenever we want to create a case we have to either create it by templates or
-we can create them and push them to Egree. A Case consists of at least one
-Party and one Document. 
-These can be either done by pushing the whole document with its data in a 
-DataDocument or by only pushing the document hash in a HashDocument. 
-HashDocuments are generally used when the document is secret/protected but a
-signature is still required.
+Whenever we want to create a case we have to either create it by templates or we can create them and push them to Egree. A Case consists of at least one Party and one Document. These can be either done by pushing the whole document with its data in a DataDocument or by only pushing the document hash in a HashDocument. HashDocuments are generally used when the document is secret/protected but a signature is still required.
 
 Creating a case is done by creating a new Draft:
 
@@ -136,9 +117,7 @@ Then we can just append the data we want:
     // can use it to find the stored Case
     Case storedNewCase = egree.getCase(newCase.getId());
 
-Note that data processing is normally done automatically unless set by the caller.
-This includes setting the data size and performing a simple ContentType evaluation
-of the file. If unsure the caller should set this manually.
+Note that data processing is normally done automatically unless set by the caller. This includes setting the data size and performing a simple ContentType evaluation of the file. If unsure the caller should set this manually.
 
 Single sign-on for an already created Agent:
 
