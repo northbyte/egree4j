@@ -8,7 +8,7 @@ import org.apache.http.NameValuePair;
 
 /**
  * Class that unwraps a maps into usable lists to be sent as request headers
- * or url parameters in a GET or POST.
+ * or URL parameters in a GET or POST.
  * 
  * @author Johan
  *
@@ -20,7 +20,7 @@ public class RequestParameterMapper {
      * that can be sent in a GET or POST.
      * 
      * @param map Map with key value pairs.
-     * @return Array of parameters extraced from the map.
+     * @return Array of parameters extracted from the map.
      */
     public static NameValuePair[] unwrap(Map<String, String> map) {
         if (map == null) {

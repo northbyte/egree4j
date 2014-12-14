@@ -17,8 +17,8 @@ public class DefaultConfiguration implements Configuration {
     
     private Boolean testEnabled = false;
     
-    private String  authenticationKey = "e43e98c4-66e5-46cb-bcc6-ff096cb1b97c";
-    private String  authenticationPassword = "dMWM123Y0QjIfdYXin_wmnm91d7ga73luBLAj4gr";
+    private String  authenticationKey = "";
+    private String  authenticationPassword = "";
     
     private String  entityParserFactory = "egree4j.parsing.JacksonEntityParserFactory";
 
@@ -103,6 +103,5 @@ public class DefaultConfiguration implements Configuration {
                 + ", entityParserFactory="
                 + entityParserFactory + "]";
     }
-    
     
 }
