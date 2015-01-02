@@ -204,7 +204,10 @@ public class RequestHandler {
     private byte[] checkResponse(CloseableHttpResponse response)
             throws EgreeServiceException, IOException {
         try {
-            if (response.getStatusLine().getStatusCode() != HTTP_OK) {
+            int returnCode = response.getStatusLine().getStatusCode();
+            logger.debug("Return code is " + returnCode);
+
+            if (returnCode != HTTP_OK) {
                 ServiceError error = errorParser.parseError(response);
                 throw new EgreeServiceException(error.getErrorCode(), 
                         error.getMessage(), error.getCode());

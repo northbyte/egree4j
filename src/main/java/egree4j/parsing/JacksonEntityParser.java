@@ -1,6 +1,10 @@
 package egree4j.parsing;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +22,7 @@ import egree4j.EgreeException;
  *
  */
 public class JacksonEntityParser implements EntityParser {    
+    private static final Logger logger = LoggerFactory.getLogger(JacksonEntityParser.class);
     private ObjectMapper mapper;
     private ErrorParser errorParser;
     
@@ -39,6 +44,11 @@ public class JacksonEntityParser implements EntityParser {
         try {
             return mapper.readValue(entity, returnType);
         } catch (IOException e) {
+            if (logger.isDebugEnabled()) {
+                String value = new String(entity, StandardCharsets.UTF_8);
+                logger.debug(value);
+            }
+            
             throw new EgreeException("Failed to read response content", e);
         }
     }

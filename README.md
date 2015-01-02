@@ -8,15 +8,13 @@ The library is built for the v2 of their API.
 
 Currently the library supports all of the current endpoints in the Egree service.
 
-## Notice
+### Note
 
 You will still need a subscription with the Egree service!
 
-Since the v2 of the Egree service is still under beta it can change without notice. This means that there might be occasions when the client needs to be updated but me not knowing it. Drop me a message or a pull request if so.
-
 ## Installation
 
-Using Maven 3.2.1, clone the repository and run
+Using Maven 3, clone the repository and run
 
     mvn clean install
 
