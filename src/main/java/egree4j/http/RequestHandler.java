@@ -2,19 +2,14 @@ package egree4j.http;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 
-import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -47,7 +42,14 @@ public class RequestHandler {
     private String  baseUrl;    // /app/v2
     private Integer port;       // 443
     
-    
+    /**
+     * Constructs a new RequestHandler to process HTTP requests.
+     *
+     * @param client Client used to create connections.
+     * @param errorParser Parser to process errors.
+     * @param authFactory Factory to generate authentication.
+     * @param conf Configuration with settings.
+     */
     public RequestHandler(CloseableHttpClient client, ErrorParser errorParser,
             AuthFactory authFactory, Configuration conf) {
         this.client = client;
@@ -75,21 +77,15 @@ public class RequestHandler {
     public byte[] get(String path, NameValuePair... parameters) 
             throws EgreeServiceException, EgreeException {
         try {
-            URIBuilder builder = new URIBuilder();
-            builder.setScheme(scheme)
-                .setHost(host)
-                .setPort(port)
-                .setPath(processPath(path));
-            if (parameters.length > 0) {
-                builder.setParameters(parameters);
-            }
+            // We don't pass port here, because doing that will set it in URL
+            // Egree responds with a 302 and login if URL is not correct
+            RequestFactory requestFactory = new RequestFactory();
+            HttpGet get = requestFactory.createGet(scheme, host, null, 
+                    processPath(path), parameters);
             
-            HttpGet httpGet = new HttpGet(builder.build());
-            debug(httpGet);
             CloseableHttpResponse response = client.execute(
-                    new HttpHost(host, port, scheme), httpGet, getContext());
-            
-            return checkResponse(response);
+                    new HttpHost(host, port, scheme), get, getContext());
+            return readAndClose(response);
         } catch (IOException | URISyntaxException e) {
             throw new EgreeException(
                     "Unable to send request to Egree service", e);
@@ -111,19 +107,13 @@ public class RequestHandler {
     public byte[] post(String path, HttpEntity body) 
             throws EgreeServiceException, EgreeException {
         try {
-            URIBuilder builder = new URIBuilder();
-            builder.setScheme(scheme)
-                .setHost(host)
-                .setPort(port)
-                .setPath(processPath(path));
+            RequestFactory requestFactory = new RequestFactory();
+            HttpPost post = requestFactory.createPost(scheme, host, null, 
+                    processPath(path), body);
             
-            HttpPost httpPost = new HttpPost(builder.build());
-            httpPost.setEntity(body);
-            debug(httpPost);
             CloseableHttpResponse response = client.execute(
-                    new HttpHost(host, port, scheme), httpPost, getContext());
-            
-            return checkResponse(response);
+                    new HttpHost(host, port, scheme), post, getContext());
+            return readAndClose(response);
         } catch (IOException | URISyntaxException e) {
             throw new EgreeException(
                     "Unable to post request to Egree service", e);
@@ -146,24 +136,13 @@ public class RequestHandler {
     public byte[] post(String path, NameValuePair... parameters) 
             throws EgreeServiceException, EgreeException {
         try {
-            URIBuilder builder = new URIBuilder();
-            builder.setScheme(scheme)
-                .setHost(host)
-                .setPort(port)
-                .setPath(processPath(path));
+            RequestFactory requestFactory = new RequestFactory();
+            HttpPost post = requestFactory.createPost(scheme, host, null, 
+                    processPath(path), parameters);
             
-            HttpPost httpPost = new HttpPost(builder.build());
-            if (parameters.length > 0) {
-                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(
-                        Arrays.asList(parameters), Consts.UTF_8);
-                httpPost.setEntity(entity);
-            }
-            
-            debug(httpPost);
             CloseableHttpResponse response = client.execute(
-                    new HttpHost(host, port, scheme), httpPost, getContext());
-            
-            return checkResponse(response);
+                    new HttpHost(host, port, scheme), post, getContext());
+            return readAndClose(response);
         } catch (IOException | URISyntaxException e) {
             throw new EgreeException(
                     "Unable to send request to Egree service", e);
@@ -201,7 +180,7 @@ public class RequestHandler {
      * 
      * This will consume the entity and close the response connection.
      */
-    private byte[] checkResponse(CloseableHttpResponse response)
+    private byte[] readAndClose(CloseableHttpResponse response)
             throws EgreeServiceException, IOException {
         try {
             int returnCode = response.getStatusLine().getStatusCode();
@@ -218,21 +197,6 @@ public class RequestHandler {
             return data;
         } finally {
             response.close();
-        }
-        
-    }
-    
-    /*
-     * Debugs a request if debug is activated.
-     */
-    private void debug(HttpRequestBase request) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Sending " + request.getMethod() + " request to" 
-                    + " Scheme: " + request.getURI().getScheme()
-                    + " Host: " + request.getURI().getHost()
-                    + " Port: " + request.getURI().getPort()
-                    + " Path: " + request.getURI().getPath()
-                    + " as request " + request.getRequestLine().getUri());
         }
     }
 }
