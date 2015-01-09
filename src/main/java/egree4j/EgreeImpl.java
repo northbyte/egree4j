@@ -151,10 +151,12 @@ public class EgreeImpl implements Egree {
     }
 
     @Override
-    public byte[] getDocument(String id) throws EgreeException {
+    public byte[] getDocument(String caseId, String documentId) 
+            throws EgreeException {
         logger.debug("Reading document from response entity ");
         return handler.get("/getdocumentdata", 
-                new RequestParameter("documentId", id));
+                new RequestParameter("caseId", caseId),
+                new RequestParameter("documentId", documentId));
     }
     
 
