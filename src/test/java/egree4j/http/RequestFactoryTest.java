@@ -12,16 +12,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import ch.qos.logback.classic.Logger;
-
-import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.Level;
 
 
 public class RequestFactoryTest {
@@ -32,19 +24,7 @@ public class RequestFactoryTest {
     public void setUp() {
         requestFactory = new RequestFactory();
     }
-    
-    @BeforeClass
-    public static void setUpOnce() {
-        Logger logger = (Logger)LoggerFactory.getLogger(RequestFactory.class);
-        logger.setLevel(Level.INFO);
-    }
-    
-    @AfterClass
-    public static void tearDownOnce() {
-        Logger logger = (Logger)LoggerFactory.getLogger(RequestFactory.class);
-        logger.setLevel(Level.DEBUG);
-    }
-    
+
     @Test
     public void testCreateSimpleGet() throws URISyntaxException {
         HttpGet get = requestFactory.createGet(
