@@ -27,7 +27,7 @@ public class JacksonErrorParser implements ErrorParser {
         
         // The 404 responds with a web page and not a JSON object.
         if (error.getCode() == NOT_FOUND) {
-            error.setMessage("Page not found");
+            error.setMessage("Not found");
             return error;
         }
         

@@ -2,6 +2,8 @@ package egree4j.integrationtests;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +20,6 @@ import egree4j.models.cases.Status;
 import egree4j.models.documents.DataDocument;
 import egree4j.models.documents.Document;
 import egree4j.models.documents.DocumentType;
-import egree4j.models.searching.FulltextQuery;
 
 /**
  * Base class for Integration Tests.
@@ -32,6 +33,7 @@ public abstract class BaseIntegrationTest {
             BaseIntegrationTest.class);
     
     protected Egree egree;
+    protected Set<String> processedCases = new HashSet<>();
     
     @Before
     public void setUp() throws Exception {
@@ -40,14 +42,16 @@ public abstract class BaseIntegrationTest {
     
     @After
     public void tearDown() throws Exception {
-        for (Case c : egree.searchCases(new FulltextQuery(""))) {
-            try {                
+        for (String id : processedCases) {
+            try {
+                Case c = egree.getCase(id);
+
                 // FIXME: Egree returns 500 on cases in draft, so we have to
                 // send them first.
                 if (c.getStatus() == Status.DRAFT) {
                     egree.sendCase(c);
                 }
-                
+
                 egree.deleteCase(c);
             } catch (EgreeException ee) {
                 logger.error("Failed to delete case", ee);

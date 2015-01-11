@@ -30,6 +30,7 @@ import egree4j.models.utils.SingleSignOn;
 import egree4j.parsing.EntityParser;
 import egree4j.parsing.EntityParserContext;
 import egree4j.parsing.ErrorParser;
+import egree4j.parsing.UrlCallbackFilter;
 
 /**
  * Implementation of the Egree interface.
@@ -144,7 +145,7 @@ public class EgreeImpl implements Egree {
         try {
             byte[] result = handler.post("/createssoticket", 
                     new StringEntity(parser.toContent(sso), CONTENT_TYPE));
-            return new String(result, StandardCharsets.UTF_8);
+            return UrlCallbackFilter.filter(result);
         } catch (UnsupportedCharsetException | ParseException e) {
             throw new EgreeException("Unexpected return data from service", e);
         }

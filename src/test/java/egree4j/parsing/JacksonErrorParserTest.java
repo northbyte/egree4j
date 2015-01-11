@@ -72,7 +72,7 @@ public class JacksonErrorParserTest {
         
         assertThat(serviceError.getCode(), is(404));
         assertThat(serviceError.getErrorCode(), is(nullValue()));
-        assertThat(serviceError.getMessage(), is("Page not found"));
+        assertThat(serviceError.getMessage(), is("Not found"));
     }
 
     @Test(expected = IOException.class)
