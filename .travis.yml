@@ -3,7 +3,6 @@ language: java
 jdk:
   - oraclejdk8
   - oraclejdk7
-  - openjdk7
 
 before_script: echo "<settings><profiles><profile><id>ci</id><properties><egree4j.test.host>\${env.EGREE_HOST}</egree4j.test.host><egree4j.test.key>\${env.EGREE_KEY}</egree4j.test.key><egree4j.test.secret>\${env.EGREE_VAL}</egree4j.test.secret></properties></profile></profiles></settings>" > ~/settings.xml
 
