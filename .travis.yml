@@ -5,4 +5,4 @@ jdk:
   - oraclejdk7
   - openjdk7
 
-script: mvn verify
+script: if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then mvn verify; else echo "Pull request test" && mvn verify; fi
