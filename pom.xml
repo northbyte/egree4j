@@ -201,6 +201,11 @@
                         </goals>
                         <configuration>
                             <skipTests>${skip.integration.tests}</skipTests>
+                            <systemPropertyVariables>
+                                <egree4j.http.host>${egree4j.test.host}</egree4j.http.host>
+                                <egree4j.auth.key>${egree4j.test.key}</egree4j.auth.key>
+                                <egree4j.auth.secret>${egree4j.test.secret}</egree4j.auth.secret>
+                            </systemPropertyVariables>
                         </configuration>
                     </execution>
                 </executions>

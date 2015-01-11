@@ -5,4 +5,6 @@ jdk:
   - oraclejdk7
   - openjdk7
 
-script: if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then mvn verify; else echo "Pull request test" && mvn verify; fi
+before_script: echo "<settings><profiles><profile><id>ci</id><properties><egree4j.test.host>\${env.EGREE_HOST}</egree4j.test.host><egree4j.test.key>\${env.EGREE_KEY}</egree4j.test.key><egree4j.test.secret>\${env.EGREE_VAL}</egree4j.test.secret></properties></profile></profiles></settings>" > ~/settings.xml
+
+script: if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then mvn verify -P ci --settings ~/settings.xml; else mvn verify; fi
