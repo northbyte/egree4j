@@ -25,7 +25,7 @@ public class AgentResourceIT extends BaseIntegrationTest {
     public void testCreateAgent() throws Exception {
         Agent agent = new Agent();
         agent.setName("Test Tester");
-        agent.setEmailAddress("user@example.com");
+        agent.setEmailAddress("null@deflexus.com");
         
         egree.createAgent(agent);
     }
@@ -33,7 +33,7 @@ public class AgentResourceIT extends BaseIntegrationTest {
     @Test
     public void testCreateSingleSignOn() throws Exception {
         String url = egree.singleSignOn(
-                "user@example.com", "example.com/callback");
+                "null@deflexus.com", "null@deflexus.com/callback");
 
         assertThat(url, startsWith("https://test.egree.com/"));
     }
