@@ -4,8 +4,6 @@
 
 This is a Java library to easily integrate the digital signature service [Egree](https://egree.com/) with your java application. It translates the Egree web service calls to Java, which allows any java user to invoke the calls with minimal configuration of the HTTP/Security/Translations around it.
 
-The library is built for the v2 of their API.
-
 Currently the library supports all of the current endpoints in the Egree service.
 
 ### Note
@@ -49,7 +47,7 @@ As such, you can either pass the parameters when you start your application:
 
     java -jar yourapp.jar -Degree4j.auth.key=someKey -Degree4j.auth.secret=someSecret
 
-Or you can in for example your java code set it:
+Or you can for example in your java code set it:
 
     System.setProperty("egree4j.auth.key", "someKey");
     System.setProperty("egree4j.auth.secret", "someSecret");

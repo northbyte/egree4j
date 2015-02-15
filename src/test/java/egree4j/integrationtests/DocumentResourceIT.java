@@ -8,12 +8,11 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import egree4j.models.cases.Case;
 import egree4j.models.cases.Draft;
-@Ignore
+
 public class DocumentResourceIT extends BaseIntegrationTest {
     
     @Before
