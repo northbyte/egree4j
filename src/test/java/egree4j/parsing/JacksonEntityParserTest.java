@@ -39,6 +39,7 @@ import egree4j.models.documents.DataDocument;
 import egree4j.models.documents.Document;
 import egree4j.models.documents.DocumentType;
 import egree4j.models.documents.HashDocument;
+import egree4j.models.utils.SingleSignOn;
 
 public class JacksonEntityParserTest extends BaseFileTest {
     
@@ -285,6 +286,24 @@ public class JacksonEntityParserTest extends BaseFileTest {
         assertThat(current.getId(), is("5a0e0866-252e-4b79-8a9b-466ea5cca5ce"));
     }
     
+    @Test
+    public void testSingleSignOnToContent() throws EgreeException, IOException {
+        SingleSignOn sso = new SingleSignOn("cipe-234");
+        sso.setTargetUrl("https://example.com/a/target");
+        
+        String content = parser.toContent(sso);
+        assertThat(content, containsString("\"TargetUrl\":\"https://example.com/a/target\""));
+        assertThat(content, containsString("\"Username\":\"cipe-234\""));
+    }
+    
+    @Test(expected = EgreeException.class)
+    public void testFaultyContent() throws EgreeException, IOException {
+        String data = "{'faultyData':'error'}";
+        HttpEntity entity = new StringEntity(data, ContentType.APPLICATION_JSON);
+        
+        parser.parseEntity(Case.class, EntityUtils.toByteArray(entity));
+    }
+    
     /*
      * Read the JSON files in the test environment to verify that the
      * json is converted properly.
@@ -298,7 +317,6 @@ public class JacksonEntityParserTest extends BaseFileTest {
                 contents += line;
             }
             return contents;
-            
         } catch (URISyntaxException | IOException e) {
             throw new EgreeException("Fail", e);
         }

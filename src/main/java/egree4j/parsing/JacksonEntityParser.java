@@ -46,7 +46,7 @@ public class JacksonEntityParser implements EntityParser {
         } catch (IOException e) {
             if (logger.isDebugEnabled()) {
                 String value = new String(entity, StandardCharsets.UTF_8);
-                logger.debug(value);
+                logger.debug("Failed to parse entity value: " + value);
             }
             
             throw new EgreeException("Failed to read response content", e);

@@ -2,7 +2,7 @@ package egree4j.config;
 
 /**
  * Context that defines the {@code Configuration} to load. This can be modified
- * by passing a system property {@code -DconfigurationFactory}, but will
+ * by passing a system property {@code -Degree4j.configurationFactory}, but will
  * by default load the [@code PropertyConfiguration}.
  * 
  * @author Johan
@@ -10,7 +10,7 @@ package egree4j.config;
  */
 public final class ConfigurationContext {
     private static final String DEFAULT_CONFIG_FACTORY = "egree4j.config.PropertyConfigurationFactory";
-    private static final String CONFIG_PROP_KEY = "configurationFactory";
+    private static final String CONFIG_PROP_KEY = "egree4j.configurationFactory";
     
     private static final ConfigurationFactory configurationFactory;
     

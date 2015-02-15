@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import egree4j.models.cases.Case;
@@ -18,7 +19,7 @@ import egree4j.models.cases.Draft;
 import egree4j.models.cases.Status;
 import egree4j.models.searching.FulltextQuery;
 import egree4j.models.searching.MetadataQuery;
-
+@Ignore
 public class CaseResourceIT extends BaseIntegrationTest {
     
     @Before

@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import org.apache.http.NameValuePair;
 
 /**
- * Class that unwraps a maps into usable lists to be sent as request headers
+ * Class that unwraps a map into usable lists to be sent as request headers
  * or URL parameters in a GET or POST.
  * 
  * @author Johan

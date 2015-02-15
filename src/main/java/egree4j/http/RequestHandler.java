@@ -37,6 +37,8 @@ public class RequestHandler {
     private AuthFactory auth;
     private ErrorParser errorParser;
     
+    private RequestFactory requestFactory;
+    
     private String  scheme;     // https
     private String  host;       // app.egree.com
     private String  baseUrl;    // /app/v2
@@ -55,6 +57,8 @@ public class RequestHandler {
         this.client = client;
         this.auth = authFactory;
         this.errorParser = errorParser;
+        
+        this.requestFactory = new RequestFactory();
         
         this.host = conf.getHostname();
         this.baseUrl = conf.getRestBaseUrl();
@@ -79,7 +83,6 @@ public class RequestHandler {
         try {
             // We don't pass port here, because doing that will set it in URL
             // Egree responds with a 302 and login if URL is not correct
-            RequestFactory requestFactory = new RequestFactory();
             HttpGet get = requestFactory.createGet(scheme, host, null, 
                     processPath(path), parameters);
             
@@ -107,7 +110,6 @@ public class RequestHandler {
     public byte[] post(String path, HttpEntity body) 
             throws EgreeServiceException, EgreeException {
         try {
-            RequestFactory requestFactory = new RequestFactory();
             HttpPost post = requestFactory.createPost(scheme, host, null, 
                     processPath(path), body);
             
@@ -136,7 +138,6 @@ public class RequestHandler {
     public byte[] post(String path, NameValuePair... parameters) 
             throws EgreeServiceException, EgreeException {
         try {
-            RequestFactory requestFactory = new RequestFactory();
             HttpPost post = requestFactory.createPost(scheme, host, null, 
                     processPath(path), parameters);
             

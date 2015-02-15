@@ -5,10 +5,11 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import egree4j.models.agents.Agent;
-
+@Ignore
 public class AgentResourceIT extends BaseIntegrationTest {
 
     @Before
