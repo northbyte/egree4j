@@ -18,7 +18,7 @@ public class UrlCallbackFilter {
     /**
      * Filters out the URL in the data. This assumes that the data passed is
      * a string containing an URL. Useful for 
-     * {@link AgentResource#singleSignOn(String, String)}.
+     * {@link egree4j.api.AgentResource#singleSignOn(String, String)}.
      * 
      * @param data Data containing a URL.
      * @return Filtered URL that is ready to use a proper URL.
