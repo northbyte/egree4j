@@ -28,6 +28,7 @@ import egree4j.models.documents.Document;
 public abstract class AbstractCase {
     private String id;
     private String name;
+    private String nameAlias;
     private List<Party> parties = new ArrayList<>();
     private List<Document> documents = new ArrayList<>();
     private List<SignatureType> allowedSignatureTypes = new ArrayList<>();
@@ -72,6 +73,14 @@ public abstract class AbstractCase {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getNameAlias() {
+        return nameAlias;
+    }
+
+    public void setNameAlias(String nameAlias) {
+        this.nameAlias = nameAlias;
     }
 
     public List<Party> getParties() {
