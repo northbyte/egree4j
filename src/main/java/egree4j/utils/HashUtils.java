@@ -51,21 +51,18 @@ public abstract class HashUtils {
      */
     private static String hashFile(File file, MessageDigest messageDigest)
             throws EgreeException {
-        byte[] hash;
         try (DigestInputStream dis = new DigestInputStream(
                 new FileInputStream(file), messageDigest)) {
             // We just want to read the stream
             while (dis.read() != -1);
-            dis.close();
-            hash = messageDigest.digest();
-            return Hex.encodeHexString(hash);
+            return Hex.encodeHexString(messageDigest.digest());
         } catch (IOException ioe) {
             throw new EgreeException("Failed to process file hash", ioe);
         }
     }
 
     /*
-     * Get the digest we want to use or throwe an exception if the
+     * Get the digest we want to use or throw an exception if the
      * type is invalid.
      */
     private static MessageDigest getDigest(String type) throws EgreeException {
