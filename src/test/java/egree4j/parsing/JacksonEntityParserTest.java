@@ -303,7 +303,20 @@ public class JacksonEntityParserTest extends BaseFileTest {
         
         parser.parseEntity(Case.class, EntityUtils.toByteArray(entity));
     }
-    
+
+    @Test // Extra fields should no longer throw an exception
+    public void testExtraFieldsIgnored() throws EgreeException, IOException {
+        String json  = readFile("/json/agentwithextra.json");
+        HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+        Agent agent = parser.parseEntity(Agent.class, EntityUtils.toByteArray(entity));
+
+        assertThat(agent.getName(), is("John Smith"));
+        assertThat(agent.getRole(), is(Role.LIMITED_AGENT));
+        assertThat(agent.getId(), is("cipe-237"));
+        assertThat(agent.getPhoneNumber(), is("+46708837292"));
+        assertThat(agent.getEmailAddress(), is("john.smith@example.com"));
+    }
+
     /*
      * Read the JSON files in the test environment to verify that the
      * json is converted properly.

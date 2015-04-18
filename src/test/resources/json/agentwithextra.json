@@ -1,0 +1,11 @@
+{
+  "Name": "John Smith",
+  "EmailAddress": "john.smith@example.com",
+  "Role": "LimitedAgent",
+  "Id": "cipe-237",
+  "ExternalId": null,
+  "PhoneNumber": "+46708837292",
+  "Culture": "en-US",
+  "Preferences": "None",
+  "AnotherOption": "Grey"
+}

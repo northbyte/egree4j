@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
@@ -33,6 +34,8 @@ public class JacksonEntityParser implements EntityParser {
                 new PropertyNamingStrategy.PascalCaseStrategy());
         mapper.registerModule(new JodaModule());
         mapper.setDateFormat(new ISO8601DateFormat());
+        mapper.configure(
+                DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         
         // error parser using jackson libs
         errorParser = new JacksonErrorParser();
