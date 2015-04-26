@@ -1,5 +1,7 @@
 package egree4j.parsing;
 
+import egree4j.config.Configuration;
+
 /**
  * Factory class for creating {@code JacksonEntityParser}.
  * 
@@ -7,11 +9,15 @@ package egree4j.parsing;
  *
  */
 public class JacksonEntityParserFactory implements EntityParserFactory {
-    private static final JacksonEntityParser INSTANCE = 
-            new JacksonEntityParser();
-
+    private static JacksonEntityParser INSTANCE;
+    
     @Override
-    public EntityParser getInstance() {
+    public EntityParser getInstance(Configuration configuration) {
+        if (INSTANCE == null) {
+            INSTANCE = new JacksonEntityParser();
+            INSTANCE.setFailOnUnknownProperties(
+                    configuration.getFailOnUnknownProperties());
+        }
         return INSTANCE;
     }
 

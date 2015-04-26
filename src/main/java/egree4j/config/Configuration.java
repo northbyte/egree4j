@@ -70,5 +70,13 @@ public interface Configuration {
      * @return Name of factory class.
      */
     String getEntityParserFactory();
-    
+
+    /**
+     * If true, the library will throw an exception if the Egree service
+     * send an unrecognized field in any response. If false, this will be
+     * silently ignored.
+     * 
+     * @return True if an exception should be thrown, false otherwise.
+     */
+    Boolean getFailOnUnknownProperties();
 }

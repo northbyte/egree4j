@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,7 +44,7 @@ import egree4j.models.utils.SingleSignOn;
 
 public class JacksonEntityParserTest extends BaseFileTest {
     
-    private EntityParser parser;
+    private JacksonEntityParser parser;
     
     @Before
     public void setUp() throws URISyntaxException {
@@ -315,6 +316,19 @@ public class JacksonEntityParserTest extends BaseFileTest {
         assertThat(agent.getId(), is("cipe-237"));
         assertThat(agent.getPhoneNumber(), is("+46708837292"));
         assertThat(agent.getEmailAddress(), is("john.smith@example.com"));
+    }
+    
+    @Test(expected = EgreeException.class)
+    public void testExtraFieldsThrowException() throws EgreeException, IOException {
+        try {
+            parser.setFailOnUnknownProperties(true);
+            String json  = readFile("/json/agentwithextra.json");
+            HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+            parser.parseEntity(Agent.class, EntityUtils.toByteArray(entity));
+            fail("No EgreeException thrown");
+        } finally {
+            parser.setFailOnUnknownProperties(false);
+        }
     }
 
     /*

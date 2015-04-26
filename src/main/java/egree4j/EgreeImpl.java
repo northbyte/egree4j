@@ -166,7 +166,7 @@ public class EgreeImpl implements Egree {
      * configurations.
      */
     private void init() throws EgreeException {
-        this.parser = EntityParserContext.getFactory(config).getInstance();
+        this.parser = EntityParserContext.getFactory(config).getInstance(config);
         this.errorParser = parser.getErrorParser();
         this.httpFactory = new DefaultHttpClientFactory();
         this.handler = new RequestHandler(

@@ -34,11 +34,24 @@ public class JacksonEntityParser implements EntityParser {
                 new PropertyNamingStrategy.PascalCaseStrategy());
         mapper.registerModule(new JodaModule());
         mapper.setDateFormat(new ISO8601DateFormat());
-        mapper.configure(
-                DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        setFailOnUnknownProperties(false);
         
         // error parser using jackson libs
         errorParser = new JacksonErrorParser();
+    }
+    
+    /**
+     * Jackson feature.
+     * Setting this to true will cause the deserialization to fail when a json
+     * data is given that has any field that the related object does not have
+     * mapped.
+     * 
+     * @param failOnUnknownProperties True if exception should be thrown, false
+     * otherwise.
+     */
+    public void setFailOnUnknownProperties(Boolean failOnUnknownProperties) {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, 
+                failOnUnknownProperties);
     }
 
     @Override

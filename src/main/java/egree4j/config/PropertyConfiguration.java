@@ -14,17 +14,15 @@ import java.util.Properties;
  *
  */
 public class PropertyConfiguration extends DefaultConfiguration {
-    private static final String HOSTNAME = "egree4j.http.host";
-    private static final String REST_BASE_URL = "egree4j.restBaseUrl";
-    private static final String TEST_ENABLED = "egree4j.test.enabled";
-    
-    private static final String PORT = "egree4j.http.port";
-    private static final String SCHEME = "egree4j.http.scheme";
+    private static final String HOSTNAME =              "egree4j.http.host";
+    private static final String PORT =                  "egree4j.http.port";
+    private static final String SCHEME =                "egree4j.http.scheme";
     private static final String ENTITY_PARSER_FACTORY = "egree4j.http.entityParserFactory";
-    
-    private static final String AUTHENTICATION_KEY = "egree4j.auth.key";
+    private static final String REST_BASE_URL =         "egree4j.restBaseUrl";
+    private static final String AUTHENTICATION_KEY =    "egree4j.auth.key";
     private static final String AUTHENTICATION_SECRET = "egree4j.auth.secret";
-    
+    private static final String FAIL_ON_UNKNOWN_PROP =  "egree4j.parse.failOnUnknown";
+    private static final String TEST_ENABLED =          "egree4j.test.enabled";
     private static final String PROPERTY_FILE = "egree4j.properties";
     
     public PropertyConfiguration() {
@@ -95,6 +93,9 @@ public class PropertyConfiguration extends DefaultConfiguration {
         if (isSet(properties, AUTHENTICATION_SECRET)) {
             setAuthenticationPassword(properties.getProperty(AUTHENTICATION_SECRET));
         }
+        if (isSet(properties, FAIL_ON_UNKNOWN_PROP)) {
+            setFailOnUnknownProperties(toBool(properties.getProperty(FAIL_ON_UNKNOWN_PROP)));
+        }
     }
 
     private boolean isSet(Properties properties, String key) {
@@ -118,8 +119,11 @@ public class PropertyConfiguration extends DefaultConfiguration {
                 + ", getAuthenticationKey()=***"
                 + ", getAuthenticationPassword()=***"
                 + ", getEntityParserFactory()="
-                + getEntityParserFactory() + "]";
+                + getEntityParserFactory() + ", getFailOnUnknownProperties()="
+                + getFailOnUnknownProperties() + "]";
     }
+
+
     
     
 }
